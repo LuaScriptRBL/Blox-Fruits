@@ -25,7 +25,7 @@ Btn.Position = UDim2.new(0, 15, 0.05, 0)
 Btn.BackgroundColor3 = Color3.fromRGB(230, 230, 230) -- Nền xám trắng
 Btn.BackgroundTransparency = 1 -- Mặc định Open là trong suốt
 Btn.Active = true
-Btn.Draggable = true
+Btn.Draggable = false
 Instance.new("UICorner", Btn).CornerRadius = UDim.new(1, 0)
 
 -- Tạo ImageLabel con chứa ảnh
