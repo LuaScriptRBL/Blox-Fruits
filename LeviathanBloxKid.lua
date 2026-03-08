@@ -4,10 +4,12 @@ local RS = game:GetService("RunService")
 local LP = game.Players.LocalPlayer
 local replicated = game:GetService("ReplicatedStorage")
 local VIM = game:GetService("VirtualInputManager") -- Dùng để nhấn Space
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
 -- 1. Khởi tạo Window
 local Window = Fluent:CreateWindow({
-    Title = "Banana Cat Hub Fake [ Leviathan Hunter ]",
-    SubTitle = "mày nhìn cái chó gì",
+    Title = "Lồn Cặc",
+    SubTitle = "Cái Lồn",
     TabWidth = 160,
     Size = UDim2.fromOffset(500, 340),
     Acrylic = false,
@@ -235,8 +237,11 @@ local function StartLeviathanFix()
         end
     end) 
 end
-
-
+local Tabs = {
+    HuntLeviathan = Window:AddTab({ Title = "Tab Hunt Leviathan", Icon = "" }),
+    SettingHunt = Window:AddTab({ Title = "Tab Select Skill", Icon = "" })
+}
+do
  Tabs.HuntLeviathan:AddButton({
         Title = "Teleport To Your Boat",
         Description = "Bad Working For Now ( lỏ cặk )",
