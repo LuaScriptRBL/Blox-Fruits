@@ -64,11 +64,6 @@ Btn.MouseButton1Click:Connect(function()
     end
 end)
 
-local Tabs = {
-    HuntLeviathan = Window:AddTab({ Title = "Tab Hunt Leviathan", Icon = "" }),
-    SettingHunt = Window:AddTab({ Title = "Tab Select Skill", Icon = "" })
-}
-
 local activeTween, freezeY = nil, nil
 
 local function GetFrozenDimension()
