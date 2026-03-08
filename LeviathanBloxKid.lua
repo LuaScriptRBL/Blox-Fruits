@@ -288,7 +288,7 @@ task.spawn(function()
     end
 end)
 
-    local ToggleFind = Tabs.HuntLeviathan:AddToggle("ToggleFind", { Title = "Find Leviathan", Default = false })
+    local ToggleFind = Tabs.HuntLeviathan:AddToggle("Find", { Title = "Find Leviathan", Default = false })
     ToggleFind:OnChanged(function(Value)
         _G.Auto = Value
         if Value then
