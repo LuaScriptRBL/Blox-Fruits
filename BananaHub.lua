@@ -4134,7 +4134,7 @@ local function check_frozen()
 end
 
 -- Khởi tạo Paragraph
-local StatusParagraph = Tabs.HuntLeviathan:AddParagraph({
+local StatusParagraph = Tabs.Sea:AddParagraph({
     Title = "Frozen Dimension.",
     Content = ""
 })
