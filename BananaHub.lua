@@ -4118,9 +4118,141 @@ local function createToggle(title, toggleKey, islands, islandName, notification)
         end
     end)
 end
-createToggle("Auto Find Prehistoric", "AutoFindPrehistoric", islandsToDelete.Prehistoric, "PrehistoricIsland", "Prehistoric Island")
-createToggle("Auto Find Mirage", "AutoFindMirage", islandsToDelete.Mirage, "MysticIsland", "Mystic Island")
-createToggle("Auto Find Leviathan", "AutoFindFrozen", islandsToDelete.Frozen, "FrozenDimension", "Leviathan Island")
+
+local TS = game:GetService("TweenService")
+local RS = game:GetService("RunService")
+local LP = game.Players.LocalPlayer
+local replicated = game:GetService("ReplicatedStorage")
+local VIM = game:GetService("VirtualInputManager") -- Dùng để nhấn Space
+--- HÀM KIỂM TRA
+local function check_frozen()
+    if game.Workspace:FindFirstChild("Frozen Dimension", true) then
+        return true
+    else
+        return false
+    end
+end
+
+-- Khởi tạo Paragraph
+local StatusParagraph = Tabs.HuntLeviathan:AddParagraph({
+    Title = "Frozen Dimension.",
+    Content = ""
+})
+
+--- VÒNG LẶP TỰ ĐỘNG CẬP NHẬT (Mỗi 3 giây)
+task.spawn(function()
+    while task.wait(0.01) do
+        if check_frozen() then
+            StatusParagraph:SetTitle("Frozen Dimension : ✅ spawned ")
+        else
+            StatusParagraph:SetTitle("Frozen Dimension : ❌ not spawn yet")
+        end
+    end
+end)
+
+local activeTween, freezeY = nil, nil
+
+local function GetFrozenDimension()
+    return workspace:FindFirstChild("_WorldOrigin") and workspace._WorldOrigin:FindFirstChild("Locations") and workspace._WorldOrigin.Locations:FindFirstChild("Frozen Dimension")
+end
+
+local function SetVelocity(part, enable)
+    if not part then return end
+    if part:FindFirstChild("CatV") then part.CatV:Destroy() end
+    if part:FindFirstChild("CatA") then part.CatA:Destroy() end
+    if enable then
+        local att = Instance.new("Attachment", part); att.Name = "CatA"
+        local lv = Instance.new("LinearVelocity", part)
+        lv.Name = "CatV"
+        lv.MaxForce = math.huge
+        lv.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+        lv.VectorVelocity = Vector3.zero
+        lv.Attachment0 = att
+    end
+end
+
+
+local ToggleFind = Tabs.Sea:AddToggle("Find", { Title = "Find Leviathan", Default = false })
+    ToggleFind:OnChanged(function(Value)
+        _G.Auto = Value
+        if Value then
+            task.spawn(function()
+                while _G.Auto do
+                    local hum = LP.Character:FindFirstChild("Humanoid")
+                    local seat = hum and hum.SeatPart
+                    if seat and seat:IsA("VehicleSeat") then
+                        if GetFrozenDimension() then
+                            if activeTween then activeTween:Cancel() end
+                            Fluent:Notify({Title = "Banana Cat Hub", Content = "Frozen Dimension Spawned", Duration = 5})
+                            repeat task.wait(1) until not GetFrozenDimension() or not _G.Auto
+                        else
+                            Fluent:Notify({Title = "Banana Cat Hub", Content = "Finding Leviathan", Duration = 3})
+                            local boat = seat.Parent.PrimaryPart
+                            SetVelocity(boat, true)
+                            freezeY = 1000
+                            boat.CFrame = CFrame.new(boat.Position.X, 1000, boat.Position.Z)
+                            task.wait(1)
+                            
+                            if _G.Auto and not GetFrozenDimension() and hum.SeatPart == seat and boat.Position.Z < 14238 then
+                                local dist = (Vector3.new(-13608, 1000, 14238) - boat.Position).Magnitude
+                                activeTween = TS:Create(boat, TweenInfo.new(dist/350, Enum.EasingStyle.Linear), {CFrame = CFrame.new(-13608, 1000, 14238)})
+                                activeTween:Play()
+                                while _G.Auto and activeTween.PlaybackState == Enum.PlaybackState.Playing and hum.SeatPart == seat do
+                                    if GetFrozenDimension() then break end
+                                    task.wait(0.000001)
+                                end
+                            end
+                            
+                            if _G.Auto and not GetFrozenDimension() and hum.SeatPart == seat then
+                                if activeTween then activeTween:Cancel() end
+                                freezeY = 175
+                                boat.CFrame = CFrame.new(boat.Position.X, 175, boat.Position.Z)
+                                task.wait(1)
+                                local targetCF = CFrame.new(boat.Position.X, 175, 1000000)
+                                activeTween = TS:Create(boat, TweenInfo.new(4000, Enum.EasingStyle.Linear), {CFrame = targetCF})
+                                activeTween:Play()
+                                while _G.Auto and activeTween.PlaybackState == Enum.PlaybackState.Playing and hum.SeatPart == seat do
+                                    if GetFrozenDimension() then break end
+                                    pcall(function() boat.CatV.VectorVelocity = boat.CFrame.LookVector * 250 end)
+                                    task.wait(0.0001)
+                                end
+                            end
+                            
+                            if activeTween then activeTween:Cancel() end
+                            freezeY = nil
+                            pcall(function()
+                                SetVelocity(boat, false)
+                                boat.CFrame = CFrame.new(boat.Position.X, 28, boat.Position.Z)
+                            end)
+                        end
+                    end
+                    task.wait(0.000001)
+                end
+            end)
+        else
+            if activeTween then activeTween:Cancel() end
+            freezeY = nil
+            pcall(function()
+                local hum = LP.Character:FindFirstChild("Humanoid")
+                if hum and hum.SeatPart then
+                    local boat = hum.SeatPart.Parent.PrimaryPart
+                    SetVelocity(boat, false)
+                    boat.CFrame = CFrame.new(boat.Position.X, 28, boat.Position.Z)
+                end
+            end)
+        end
+    end)
+end
+
+RS.Stepped:Connect(function()
+    if _G.Auto and freezeY and LP.Character and LP.Character:FindFirstChild("HumanoidRootPart") then
+        LP.Character.HumanoidRootPart.Velocity = Vector3.new(LP.Character.HumanoidRootPart.Velocity.X, 0, LP.Character.HumanoidRootPart.Velocity.Z)
+        pcall(function()
+            local boat = LP.Character.Humanoid.SeatPart.Parent.PrimaryPart
+            boat.Velocity = Vector3.new(boat.Velocity.X, 0, boat.Velocity.Z)
+        end)
+    end
+end)
 local AutoComeTikiToggle = Tabs.Sea:AddToggle("AutoComeTiki", {
     Title="Auto Tiki Island",
     Description="",
