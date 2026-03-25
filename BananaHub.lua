@@ -21,6 +21,40 @@ if _G.FastAttack then
         end
         return last
     end
+    local TS = game:GetService("TweenService")
+local RS = game:GetService("RunService")
+local LP = game.Players.LocalPlayer
+local replicated = game:GetService("ReplicatedStorage")
+local VIM = game:GetService("VirtualInputManager") -- Dùng để nhấn Space
+--- HÀM KIỂM TRA
+local function check_frozen()
+    if game.Workspace:FindFirstChild("Frozen Dimension", true) then
+        return true
+    else
+        return false
+    end
+end
+
+local activeTween, freezeY = nil, nil
+
+local function GetFrozenDimension()
+    return workspace:FindFirstChild("_WorldOrigin") and workspace._WorldOrigin:FindFirstChild("Locations") and workspace._WorldOrigin.Locations:FindFirstChild("Frozen Dimension")
+end
+
+local function SetVelocity(part, enable)
+    if not part then return end
+    if part:FindFirstChild("CatV") then part.CatV:Destroy() end
+    if part:FindFirstChild("CatA") then part.CatA:Destroy() end
+    if enable then
+        local att = Instance.new("Attachment", part); att.Name = "CatA"
+        local lv = Instance.new("LinearVelocity", part)
+        lv.Name = "CatV"
+        lv.MaxForce = math.huge
+        lv.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+        lv.VectorVelocity = Vector3.zero
+        lv.Attachment0 = att
+    end
+end
 
     local VirtualInputManager = game:GetService("VirtualInputManager")
     local CollectionService = game:GetService("CollectionService")
@@ -4119,19 +4153,6 @@ local function createToggle(title, toggleKey, islands, islandName, notification)
     end)
 end
 
-local TS = game:GetService("TweenService")
-local RS = game:GetService("RunService")
-local LP = game.Players.LocalPlayer
-local replicated = game:GetService("ReplicatedStorage")
-local VIM = game:GetService("VirtualInputManager") -- Dùng để nhấn Space
---- HÀM KIỂM TRA
-local function check_frozen()
-    if game.Workspace:FindFirstChild("Frozen Dimension", true) then
-        return true
-    else
-        return false
-    end
-end
 
 -- Khởi tạo Paragraph
 local StatusParagraph = Tabs.Sea:AddParagraph({
@@ -4149,27 +4170,6 @@ task.spawn(function()
         end
     end
 end)
-
-local activeTween, freezeY = nil, nil
-
-local function GetFrozenDimension()
-    return workspace:FindFirstChild("_WorldOrigin") and workspace._WorldOrigin:FindFirstChild("Locations") and workspace._WorldOrigin.Locations:FindFirstChild("Frozen Dimension")
-end
-
-local function SetVelocity(part, enable)
-    if not part then return end
-    if part:FindFirstChild("CatV") then part.CatV:Destroy() end
-    if part:FindFirstChild("CatA") then part.CatA:Destroy() end
-    if enable then
-        local att = Instance.new("Attachment", part); att.Name = "CatA"
-        local lv = Instance.new("LinearVelocity", part)
-        lv.Name = "CatV"
-        lv.MaxForce = math.huge
-        lv.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
-        lv.VectorVelocity = Vector3.zero
-        lv.Attachment0 = att
-    end
-end
 
 
 local ToggleFind = Tabs.Sea:AddToggle("Find", { Title = "Find Leviathan", Default = false })
