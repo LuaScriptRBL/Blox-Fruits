@@ -1,4 +1,3 @@
-
 local TS = game:GetService("TweenService")
 local RS = game:GetService("RunService")
 local LP = game.Players.LocalPlayer
@@ -76,7 +75,6 @@ _G.FruitSkills = {["Z"] = true, ["X"] = true, ["C"] = true, ["V"] = true, ["F"] 
 _G.SwordSkills = {["Z"] = true, ["X"] = true}
 _G.GunSkills = {["Z"] = true, ["X"] = true}
 
-local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local function EquipWeapon(WeaponType)
     local Character = game.Players.LocalPlayer.Character
@@ -269,7 +267,7 @@ task.spawn(function()
     end
 end)
 
-    Tabs.HuntLeviathan:AddToggle("AutoTravel", {Title = "Auto Find Leviathan", Default = false })
+local Toggle = Tabs.HuntLeviathan:AddToggle("AutoTravel", {Title = "Auto Find Leviathan", Default = false })
 
 local z_Limit = 13451
 local flySpeed = 325
