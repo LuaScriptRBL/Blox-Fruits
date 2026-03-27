@@ -7,7 +7,6 @@
 
 -- Try load Banana UI
 local Library = loadstring(game:HttpGet("https://pastefy.app/Oiw0q6ZL/raw"))()
-
 if not Library then 
     warn("Banana UI load failed. Your executor may not support the provided URL.")
     return 
@@ -89,7 +88,7 @@ task.spawn(function()
                 if tick() - lastNotify >= 3 then
                     Library:Notify({
                         Title = "đăng yêu ánh",
-                        Description = "Frozen Dimension Spawned",
+                        Description = "Frozen Dimension Spawned\n-----",
                         Duration = 4
                     })
                     lastNotify = tick()
@@ -164,7 +163,49 @@ RS.Heartbeat:Connect(function()
         end
     end)
 end)
-        
+dangmocanh:AddToggle("Boost Fps", {
+    Title = "Boost Fps",
+    Default = false,
+    Callback = function()
+        local a = false
+        local b = game
+        local c = b.Workspace
+        local d = b.Lighting
+        local e = c.Terrain
+        e.WaterWaveSize = 0
+        e.WaterWaveSpeed = 0
+        e.WaterReflectance = 0
+        e.WaterTransparency = 0
+        d.GlobalShadows = false
+        d.FogEnd = 9e9
+        d.Brightness = 0
+        settings().Rendering.QualityLevel = "Level01"
+        for _, f in pairs(b:GetDescendants()) do
+            if f:IsA("Part") or f:IsA("Union") or f:IsA("CornerWedgePart") or f:IsA("TrussPart") then
+                f.Material = "Plastic"
+                f.Reflectance = 0
+            elseif f:IsA("Decal") or f:IsA("Texture") and a then
+                f.Transparency = 1
+            elseif f:IsA("ParticleEmitter") or f:IsA("Trail") then
+                f.Lifetime = NumberRange.new(0)
+            elseif f:IsA("Explosion") then
+                f.BlastPressure = 1
+                f.BlastRadius = 1
+            elseif f:IsA("Fire") or f:IsA("SpotLight") or f:IsA("Smoke") or f:IsA("Sparkles") then
+                f.Enabled = false
+            elseif f:IsA("MeshPart") then
+                f.Material = "Plastic"
+                f.Reflectance = 0
+                f.TextureID = 10385902758728957
+            end
+        end
+        for _, g in pairs(d:GetChildren()) do
+            if g:IsA("BlurEffect") or g:IsA("SunRaysEffect") or g:IsA("ColorCorrectionEffect") or g:IsA("BloomEffect") or g:IsA("DepthOfFieldEffect") then
+                g.Enabled = false
+            end
+        end
+    end
+})
 -- Final startup
 updateHighlightsState()
 print("Banana Hub Loaded Succesfully")
