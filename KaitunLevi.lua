@@ -283,6 +283,7 @@ concac:AddToggle("ToggleAutoBuso", {
 })
 concac:AddToggle("ToggleAutoT", {
     Title = "Auto Turn On V3",
+    Default = false,
     Callback = function(Value)
         DoAutoV3(Value)
     end
