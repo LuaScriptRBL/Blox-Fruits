@@ -206,6 +206,43 @@ dangmocanh:AddToggle("Boost Fps", {
         end
     end
 })
+local setting = Window:AddTab"Setting for Farm")
+local concac = setting:AddLeftGroupbox("Setup")
+local ToggleAutoY = setting:AddToggle("ToggleAutoY", {Title="Auto Turn On V4", Description="", Default=false })
+ToggleAutoY:OnChanged(function(Value)
+    _G.AutoY=Value
+end)
+Options.ToggleAutoY:SetValue(false)
+spawn(function()
+    while wait() do
+        pcall(function()
+            if _G.AutoY then
+                game:GetService("VirtualInputManager"):SendKeyEvent(true, "Y", false, game)
+                wait()
+                game:GetService("VirtualInputManager"):SendKeyEvent(false, "Y", false, game)
+            end
+        end)
+    end
+end)
+local ToggleAutoKen = setting:AddToggle("ToggleAutoKen", {Title="Auto Turn On Observation", Description="", Default=false })
+ToggleAutoKen:OnChanged(function(Value)
+    _G.AutoKen=Value
+    if Value then
+        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", true)
+    else
+        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", false) 
+    end
+end)
+Options.ToggleAutoKen:SetValue(false)
+spawn(function()
+    while wait() do
+        pcall(function()
+            if _G.AutoKen then
+                game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", true)
+            end
+        end)
+    end
+end)
 -- Final startup
 updateHighlightsState()
 print("Banana Hub Loaded Succesfully")
