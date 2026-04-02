@@ -145,7 +145,7 @@ local function UpdateLeviStatus()
     task.spawn(function()
         while task.wait(1) do
             pcall(function()
-                local bribeStatus = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
+                local bribeStatus = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
                 local statusText = ""
                 
                 if bribeStatus == 5 then
@@ -153,7 +153,7 @@ local function UpdateLeviStatus()
                 elseif bribeStatus == 0 then
                     statusText = "I Don't Know"
                 else
-                    statusText = "Buy: " .. tostring(bribeStatus)
+                    statusText = "Buy Find Leviathan" .. tostring(bribeStatus)
                 end
                 
                 BribeLeviathan:SetTitle("Status Chip Leviathan: " .. statusText)
