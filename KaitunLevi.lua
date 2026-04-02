@@ -142,7 +142,7 @@ end
 
 -- TẠO TOGGLE
 local BribeLeviathan = dangmocanh:AddLabel({
-        Title="Status Spy",
+        Title = "Status Spy",
         Content=""
     })
     spawn(function()
