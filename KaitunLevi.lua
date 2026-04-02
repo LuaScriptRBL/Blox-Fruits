@@ -141,33 +141,29 @@ local function StopAll()
 end
 
 -- TẠO TOGGLE
-local function UpdateLeviStatus()
-    task.spawn(function()
-        while task.wait(1) do
-            pcall(function()
-                local bribeStatus = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
-                local statusText = ""
-                
-                if bribeStatus == 5 then
-                    statusText = "Leviathan Is Out There"
-                elseif bribeStatus == 0 then
-                    statusText = "I Don't Know"
-                else
-                    statusText = "Buy: " .. tostring(bribeStatus)
-                end
-                
-                dangmocanh:SetDesc("Status Chip Leviathan", statusText)
-            end)
-        end
-    end)
-end
-
-dangmocanh:AddParagraph({
+dangmocanhAddParagraph({
     Title = "Status Chip Leviathan",
-    Content = "Checking..."
+    Content = "Loading..."
 })
 
-UpdateLeviStatus()
+task.spawn(function()
+    while task.wait(1) do
+        pcall(function()
+            local bribeStatus = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
+            local statusText = ""
+            
+            if bribeStatus == 5 then
+                statusText = "Leviathan Is Out There"
+            elseif bribeStatus == 0 then
+                statusText = "I Don't Know"
+            else
+                statusText = "Buy: " .. tostring(bribeStatus)
+            end
+            
+            Tabs.Sea:SetDesc("Status Chip Leviathan", statusText)
+        end)
+    end
+end)
 
 dangmocanh:AddButton({
     Title = "Buy Chip Leviathan",
