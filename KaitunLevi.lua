@@ -208,43 +208,35 @@ dangmocanh:AddToggle("Boost Fps", {
 })
 local setting = Window:AddTab"Setting for Farm")
 local concac = setting:AddLeftGroupbox("Setup")
-local ToggleAutoY = setting:AddToggle("ToggleAutoY", {
-Title="Auto Turn On V4",
-Default = false })
-ToggleAutoY:OnChanged(function(Value)
-    _G.AutoY=Value
+concac:AddToggle("ToggleAutoY", {
+    Title = "Auto Turn On V4", 
+    Default = false 
+}):OnChanged(function(Value)
+    _G.AutoY = Value
+    task.spawn(function()
+        while _G.AutoY do
+            game:GetService("VirtualInputManager"):SendKeyEvent(true, "Y", false, game)
+            task.wait(0.1)
+            game:GetService("VirtualInputManager"):SendKeyEvent(false, "Y", false, game)
+            task.wait(1)
+        end
+    end)
 end)
-Options.ToggleAutoY:SetValue(false)
-spawn(function()
-    while wait() do
-        pcall(function()
-            if _G.AutoY then
-                game:GetService("VirtualInputManager"):SendKeyEvent(true, "Y", false, game)
-                wait()
-                game:GetService("VirtualInputManager"):SendKeyEvent(false, "Y", false, game)
-            end
-        end)
-    end
-end)
-local ToggleAutoKen = setting:AddToggle("ToggleAutoKen", {
-Title="Auto Turn On Observation", 
-Default = false })
-ToggleAutoKen:OnChanged(function(Value)
-    _G.AutoKen=Value
+
+concac:AddToggle("ToggleAutoKen", {
+    Title = "Auto Turn On Observation", 
+    Default = false 
+}):OnChanged(function(Value)
+    _G.AutoKen = Value
     if Value then
-        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", true)
-    else
-        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", false) 
-    end
-end)
-Options.ToggleAutoKen:SetValue(false)
-spawn(function()
-    while wait() do
-        pcall(function()
-            if _G.AutoKen then
+        task.spawn(function()
+            while _G.AutoKen do
                 game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", true)
+                task.wait(0.5)
             end
         end)
+    else
+        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", false)
     end
 end)
 -- Final startup
