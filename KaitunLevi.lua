@@ -143,7 +143,6 @@ end
 -- TẠO TOGGLE
 dangmocanh:AddButton({
     Title = "Buy Chip Leviathan ( Description like auto buy chip )",
-    Description = "It does not check spy , still buy chip when you bought full",
     Callback=function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
     end
