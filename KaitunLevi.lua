@@ -141,31 +141,25 @@ local function StopAll()
 end
 
 -- TẠO TOGGLE
-local function UpdateLeviStatus()
-    task.spawn(function()
-        while task.wait(1) do
-            pcall(function()
-                local bribeStatus = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
-                local statusText = ""
-                
-                if bribeStatus == 5 then
-                    statusText = "Leviathan Is Out There"
-                elseif bribeStatus == 0 then
-                    statusText = "I Don't Know"
+local BribeLeviathan = dangmocanh:AddLabel({
+        Title="Status Spy",
+        Content=""
+    })
+    spawn(function()
+        pcall(function()
+            while wait() do
+                local bribeStatus = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
+                if bribeStatus==5 then
+                    BribeLeviathan:SetDesc("Leviathan Is Out There")
+                elseif bribeStatus==0 then
+                    BribeLeviathan:SetDesc("I Don't Know")
                 else
-                    statusText = "Buy Find Leviathan" .. tostring(bribeStatus)
+                    BribeLeviathan:SetDesc("Buy: " .. tostring(bribeStatus))
                 end
-                
-                BribeLeviathan:SetTitle("Status Chip Leviathan: " .. statusText)
-            end)
-        end
+            end
+        end)
     end)
 end
-
-BribeLeviathan = dangmocanh:AddLabel("Status Chip Leviathan: Checking...")
-
-UpdateLeviStatus()
-
 dangmocanh:AddButton({
     Title = "Buy Chip Leviathan",
     Callback=function()
