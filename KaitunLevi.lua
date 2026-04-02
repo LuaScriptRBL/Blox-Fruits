@@ -206,7 +206,7 @@ dangmocanh:AddToggle("Boost Fps", {
         end
     end
 })
-local setting = Window:AddTab"Setting for Farm")
+local setting = Window:AddTab("Setting for Farm")
 local concac = setting:AddLeftGroupbox("Setup")
 concac:AddToggle("ToggleAutoY", {
     Title = "Auto Turn On V4", 
