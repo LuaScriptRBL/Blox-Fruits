@@ -275,7 +275,7 @@ dangmocanh:AddToggle("Boost Fps", {
 -- TOGGLES (Using Callback)
 ----------------------------------------------------------------
 concac:AddToggle("ToggleAutoBuso", {
-    Title = "Auto Buso Haki",
+    Title = "Auto Turn On Buso",
     Default = true,
     Callback = function(Value)
         DoAutoBuso(Value)
@@ -283,7 +283,6 @@ concac:AddToggle("ToggleAutoBuso", {
 })
 concac:AddToggle("ToggleAutoT", {
     Title = "Auto On V3",
-    Description = "",
     Default = false,
     Callback = function(Value)
         DoAutoV3(Value)
