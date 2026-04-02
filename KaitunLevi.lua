@@ -127,6 +127,20 @@ local function StopAll()
 end
 
 -- TẠO TOGGLE
+dangmocanh:AddButton({
+    Title="Buy Chip Leviathan",
+    Callback=function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
+    end
+})
+dangmocanh:AddToggle({
+    Title="Buy Chip Leviathan",
+    Callback=function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
+        end 
+        task.wait(1) 
+    end
+})
 dangmocanh:AddToggle("AutoTravel", {
     Title = "Auto Find Leviathan",
     Default = false,
