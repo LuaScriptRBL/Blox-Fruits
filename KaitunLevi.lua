@@ -147,11 +147,11 @@ local BribeLeviathan = dangmocanh:AddLabel("Status Spy")
             while wait() do
                 local bribeStatus = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
                 if bribeStatus==5 then
-                    BribeLeviathan:SetDesc("Leviathan Is Out There")
+                    BribeLeviathan:StatusText("Leviathan Is Out There")
                 elseif bribeStatus==0 then
-                    BribeLeviathan:SetDesc("I Don't Know")
+                    BribeLeviathan:StatusText("I Don't Know")
                 else
-                    BribeLeviathan:SetDesc("Buy: " .. tostring(bribeStatus))
+                    BribeLeviathan:StatusText("Buy: " .. tostring(bribeStatus))
                 end
             end
         end)
