@@ -141,10 +141,7 @@ local function StopAll()
 end
 
 -- TẠO TOGGLE
-local BribeLeviathan = dangmocanh:AddLabel({
-        Title = "Status Spy",
-        Content=""
-    })
+local BribeLeviathan = dangmocanh:AddLabel("Status Spy")
     spawn(function()
         pcall(function()
             while wait() do
