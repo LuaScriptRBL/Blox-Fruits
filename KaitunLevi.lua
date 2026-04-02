@@ -20,6 +20,7 @@ end
 local TS = game:GetService("TweenService")
 local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
+local VirtualUser = game:GetService("VirtualUser")
 local function DoAutoV4(Value)
     _G.AutoY = Value
     if Value then
@@ -263,5 +264,10 @@ concac:AddToggle("ToggleAutoKen", {
     end
 })
 
+
+-- Kết nối với sự kiện Idled để ngăn chặn việc bị kick
+LP.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
 updateHighlightsState()
 print("Banana Hub Loaded Succesfully")
