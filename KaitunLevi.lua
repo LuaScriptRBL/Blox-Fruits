@@ -54,7 +54,7 @@ end
 
 -- ===== Banana UI =====
 local Window = Library:CreateWindow({
-    Title = "Banana Cat Hub",
+    Title = "Visibility Hub",
     Subtitle = "- Blox Fruits",
     Image = "rbxassetid://5009915812"
 })
@@ -121,8 +121,8 @@ task.spawn(function()
                 if currentY ~= 0 or activeTween then StopAll() end
                 if tick() - lastNotify >= 3 then
                     Library:Notify({
-                        Title = "đăng yêu ánh",
-                        Description = "Frozen Dimension Spawned\n-----",
+                        Title = "Visibility Hub",
+                        Description = "Frozen Dimension Spawned",
                         Duration = 4
                     })
                     lastNotify = tick()
