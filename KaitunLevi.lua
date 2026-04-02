@@ -208,7 +208,9 @@ dangmocanh:AddToggle("Boost Fps", {
 })
 local setting = Window:AddTab"Setting for Farm")
 local concac = setting:AddLeftGroupbox("Setup")
-local ToggleAutoY = setting:AddToggle("ToggleAutoY", {Title="Auto Turn On V4", Description="", Default=false })
+local ToggleAutoY = setting:AddToggle("ToggleAutoY", 
+{Title="Auto Turn On V4",
+Default=false })
 ToggleAutoY:OnChanged(function(Value)
     _G.AutoY=Value
 end)
@@ -224,7 +226,9 @@ spawn(function()
         end)
     end
 end)
-local ToggleAutoKen = setting:AddToggle("ToggleAutoKen", {Title="Auto Turn On Observation", Description="", Default=false })
+local ToggleAutoKen = setting:AddToggle("ToggleAutoKen", 
+{Title="Auto Turn On Observation", 
+Default=false })
 ToggleAutoKen:OnChanged(function(Value)
     _G.AutoKen=Value
     if Value then
