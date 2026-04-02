@@ -12,19 +12,11 @@ if not Library then
     return 
 end
 
-local function frozenIsland()
-    return workspace:FindFirstChild("_WorldOrigin") 
-        and workspace._WorldOrigin:FindFirstChild("Locations") 
-        and workspace._WorldOrigin.Locations:FindFirstChild("Frozen Dimension")
-end
+
 local TS = game:GetService("TweenService")
 local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
-local z_Limit = 13451
-local flySpeed = 325
-local activeTween = nil
-local currentY = 0
-local lastNotify = 0
+
 local function DoAutoV4(Value)
     _G.AutoY = Value
     if Value then
@@ -90,8 +82,38 @@ local setting = Window:AddTab("Setting for Farm")
 local concac = setting:AddLeftGroupbox("Setup")
 -- ===== Aimbot Tab =====
 local dangmocanh = HuntLeviathan:AddLeftGroupbox("Leviathan")
+local function frozenIsland()
+    return workspace:FindFirstChild("_WorldOrigin") 
+        and workspace._WorldOrigin:FindFirstChild("Locations") 
+        and workspace._WorldOrigin.Locations:FindFirstChild("Frozen Dimension")
+end
+
+local z_Limit = 13451
+local flySpeed = 325
+local currentY = 0
+local lastNotify = 0
+
+-- HÀM DỪNG TOÀN BỘ VẬT LÝ VÀ DI CHUYỂN
+local function StopAll()
+    currentY = 0
+    pcall(function()
+        local char = LP.Character
+        local hum = char and char:FindFirstChild("Humanoid")
+        local seat = hum and hum.SeatPart
+        if seat then
+            local boat = seat:FindFirstAncestorOfClass("Model")
+            local root = (boat and boat.PrimaryPart) or seat
+            root.Anchored = false
+            root.Velocity = Vector3.zero
+            -- Hạ thuyền xuống mặt nước
+            root.CFrame = CFrame.new(root.Position.X, 23, root.Position.Z) * root.CFrame.Rotation
+        end
+    end)
+end
+
+-- TẠO TOGGLE THEO MẪU
 dangmocanh:AddToggle("AutoTravel", {
-    Title = "Auto Find Leviathan",
+    Title = "Conditional Tween Boat",
     Default = false,
     Callback = function(Value)
         AutoTravel = Value
@@ -102,15 +124,14 @@ dangmocanh:AddToggle("AutoTravel", {
     end
 })
 
--- LUỒNG QUÉT ĐẢO VÀ THÔNG BÁO
+-- LUỒNG QUÉT ĐẢO VÀ THÔNG BÁO (CHẠY ĐỘC LẬP)
 task.spawn(function()
     while true do
         task.wait(0.5)
         if AutoTravel then
             if frozenIsland() then
-                if currentY ~= 0 or activeTween then
-                    StopAll()
-                end
+                -- Nếu có đảo thì liên tục ép StopAll để đè các lệnh di chuyển khác
+                StopAll()
                 
                 if tick() - lastNotify >= 3 then
                     Library:Notify({
@@ -125,11 +146,12 @@ task.spawn(function()
     end
 end)
 
--- LUỒNG ĐIỀU KHIỂN CHÍNH
+-- LUỒNG ĐIỀU KHIỂN CHÍNH: LÀM MỚI 10 UNIT VÀ KIỂM TRA ĐẢO TRONG TỪNG NHỊP
 task.spawn(function()
     while true do
-        task.wait(0.05)
+        task.wait() 
         if AutoTravel then
+            -- KIỂM TRA ĐẢO TRƯỚC KHI BẮT ĐẦU NHỊP TWEEN MỚI
             if not frozenIsland() then
                 pcall(function()
                     local char = LP.Character
@@ -140,37 +162,53 @@ task.spawn(function()
                         local boat = seat:FindFirstAncestorOfClass("Model")
                         local root = (boat and boat.PrimaryPart) or seat
                         
+                        -- 1. Check Z & Set Y
                         local targetY = (root.Position.Z < z_Limit) and 1000 or 150
-                        
-                        -- Cập nhật độ cao Y
                         if currentY ~= targetY then
-                            if activeTween then activeTween:Cancel() activeTween = nil end
                             currentY = targetY
                             root.CFrame = CFrame.new(root.Position.X, currentY, root.Position.Z) * root.CFrame.Rotation
                         end
                         
-                        -- Duy trì Tween
-                        if not activeTween or activeTween.PlaybackState ~= Enum.PlaybackState.Playing then
-                            local targetZ = 300000 
-                            local dist = math.abs(targetZ - root.Position.Z)
-                            local targetCF = CFrame.new(root.Position.X, currentY, targetZ) * root.CFrame.Rotation
-                            
-                            activeTween = TS:Create(root, TweenInfo.new(dist/flySpeed, Enum.EasingStyle.Linear), {CFrame = targetCF})
-                            activeTween:Play()
+                        -- 2. Thực hiện Tween ngắn 10 unit
+                        local nextZ = root.Position.Z + 10
+                        local targetCF = CFrame.new(root.Position.X, currentY, nextZ) * root.CFrame.Rotation
+                        
+                        local tween = TS:Create(root, TweenInfo.new(10 / flySpeed, Enum.EasingStyle.Linear), {CFrame = targetCF})
+                        tween:Play()
+                        
+                        -- ĐỢI TWEEN XONG HOẶC DỪNG NẾU THẤY ĐẢO GIỮA CHỪNG
+                        local completed = false
+                        local connection
+                        connection = tween.Completed:Connect(function()
+                            completed = true
+                            connection:Disconnect()
+                        end)
+                        
+                        -- Vòng lặp chờ siêu nhỏ để có thể ngắt Tween ngay lập tức
+                        while not completed do
+                            if frozenIsland() or not AutoTravel then
+                                tween:Cancel()
+                                connection:Disconnect()
+                                break
+                            end
+                            task.wait()
                         end
                     else
                         if currentY ~= 0 then StopAll() end
+                        task.wait(0.5)
                     end
                 end)
+            else
+                -- Nếu đã có đảo thì đứng yên chờ người chơi
+                task.wait(1)
             end
         end
     end
 end)
 
--- LUỒNG ÉP CAO ĐỘ (HEARTBEAT)
+-- LUỒNG ÉP CAO ĐỘ (HEARTBEAT) - CHẶN CFrame NẾU CÓ ĐẢO
 RS.Heartbeat:Connect(function()
     if not AutoTravel or currentY == 0 or frozenIsland() then return end
-    
     pcall(function()
         local char = LP.Character
         local hum = char and char:FindFirstChild("Humanoid")
@@ -178,9 +216,9 @@ RS.Heartbeat:Connect(function()
             local seat = hum.SeatPart
             local root = (seat:FindFirstAncestorOfClass("Model") and seat:FindFirstAncestorOfClass("Model").PrimaryPart) or seat
             
-            root.CFrame = CFrame.new(root.Position.X, currentY, root.Position.Z) * root.CFrame.Rotation
             root.Velocity = Vector3.zero
             
+            -- NoClip Boat
             local boat = seat:FindFirstAncestorOfClass("Model")
             if boat then
                 for _, p in pairs(boat:GetDescendants()) do
