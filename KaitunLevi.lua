@@ -20,11 +20,6 @@ end
 local TS = game:GetService("TweenService")
 local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
-local z_Limit = 13451
-local flySpeed = 325
-local activeTween = nil
-local currentY = 0
-local lastNotify = 0
 local function DoAutoV4(Value)
     _G.AutoY = Value
     if Value then
@@ -52,23 +47,8 @@ local function DoAutoKen(Value)
         game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", false)
     end
 end
--- HÀM DỪNG TOÀN BỘ
-local function StopAll()
-    if activeTween then activeTween:Cancel() activeTween = nil end
-    currentY = 0
-    pcall(function()
-        local char = LP.Character
-        local hum = char and char:FindFirstChild("Humanoid")
-        local seat = hum and hum.SeatPart
-        if seat then
-            local boat = seat:FindFirstAncestorOfClass("Model")
-            local root = (boat and boat.PrimaryPart) or seat
-            root.Anchored = false
-            root.Velocity = Vector3.zero
-            root.CFrame = CFrame.new(root.Position.X, 23, root.Position.Z) * root.CFrame.Rotation
-        end
-    end)
-end
+
+
 
 
 -- ===== Banana UI =====
@@ -90,6 +70,35 @@ local setting = Window:AddTab("Setting for Farm")
 local concac = setting:AddLeftGroupbox("Setup")
 -- ===== Aimbot Tab =====
 local dangmocanh = HuntLeviathan:AddLeftGroupbox("Leviathan")
+local TS = game:GetService("TweenService")
+local RS = game:GetService("RunService")
+local LP = game:GetService("Players").LocalPlayer
+
+local z_Limit = 13451
+local flySpeed = 325
+local activeTween = nil
+local currentY = 0
+local lastNotify = 0
+
+-- HÀM DỪNG TOÀN BỘ
+local function StopAll()
+    if activeTween then activeTween:Cancel() activeTween = nil end
+    currentY = 0
+    pcall(function()
+        local char = LP.Character
+        local hum = char and char:FindFirstChild("Humanoid")
+        local seat = hum and hum.SeatPart
+        if seat then
+            local boat = seat:FindFirstAncestorOfClass("Model")
+            local root = (boat and boat.PrimaryPart) or seat
+            root.Anchored = false
+            root.Velocity = Vector3.zero
+            root.CFrame = CFrame.new(root.Position.X, 23, root.Position.Z) * root.CFrame.Rotation
+        end
+    end)
+end
+
+-- TẠO TOGGLE
 dangmocanh:AddToggle("AutoTravel", {
     Title = "Auto Find Leviathan",
     Default = false,
@@ -108,10 +117,7 @@ task.spawn(function()
         task.wait(0.5)
         if AutoTravel then
             if frozenIsland() then
-                if currentY ~= 0 or activeTween then
-                    StopAll()
-                end
-                
+                if currentY ~= 0 or activeTween then StopAll() end
                 if tick() - lastNotify >= 3 then
                     Library:Notify({
                         Title = "đăng yêu ánh",
@@ -125,44 +131,44 @@ task.spawn(function()
     end
 end)
 
--- LUỒNG ĐIỀU KHIỂN CHÍNH
+-- LUỒNG ĐIỀU KHIỂN CHÍNH (BAY MÃI MÃI HƯỚNG Z DƯƠNG)
 task.spawn(function()
     while true do
-        task.wait(0.05)
-        if AutoTravel then
-            if not frozenIsland() then
-                pcall(function()
-                    local char = LP.Character
-                    local hum = char and char:FindFirstChild("Humanoid")
+        task.wait(0.1)
+        if AutoTravel and not frozenIsland() then
+            pcall(function()
+                local char = LP.Character
+                local hum = char and char:FindFirstChild("Humanoid")
+                
+                if hum and hum.Sit and hum.SeatPart then
+                    local seat = hum.SeatPart
+                    local boat = seat:FindFirstAncestorOfClass("Model")
+                    local root = (boat and boat.PrimaryPart) or seat
                     
-                    if hum and hum.Sit and hum.SeatPart then
-                        local seat = hum.SeatPart
-                        local boat = seat:FindFirstAncestorOfClass("Model")
-                        local root = (boat and boat.PrimaryPart) or seat
-                        
-                        local targetY = (root.Position.Z < z_Limit) and 1000 or 150
-                        
-                        -- Cập nhật độ cao Y
-                        if currentY ~= targetY then
-                            if activeTween then activeTween:Cancel() activeTween = nil end
-                            currentY = targetY
-                            root.CFrame = CFrame.new(root.Position.X, currentY, root.Position.Z) * root.CFrame.Rotation
-                        end
-                        
-                        -- Duy trì Tween
-                        if not activeTween or activeTween.PlaybackState ~= Enum.PlaybackState.Playing then
-                            local targetZ = 1000000
-                            local dist = math.abs(targetZ - root.Position.Z)
-                            local targetCF = CFrame.new(root.Position.X, currentY, targetZ) * root.CFrame.Rotation
-                            
-                            activeTween = TS:Create(root, TweenInfo.new(dist/flySpeed, Enum.EasingStyle.Linear), {CFrame = targetCF})
-                            activeTween:Play()
-                        end
-                    else
-                        if currentY ~= 0 then StopAll() end
+                    local targetY = (root.Position.Z < z_Limit) and 1000 or 150
+                    
+                    -- 1. Cập nhật Y tức thì nếu đổi vùng Z
+                    if currentY ~= targetY then
+                        if activeTween then activeTween:Cancel() activeTween = nil end
+                        currentY = targetY
+                        root.CFrame = CFrame.new(root.Position.X, currentY, root.Position.Z) * root.CFrame.Rotation
                     end
-                end)
-            end
+                    
+                    -- 2. Tạo Tween bay mãi về hướng Z dương (1,000,000)
+                    if not activeTween or activeTween.PlaybackState ~= Enum.PlaybackState.Playing then
+                        local targetZ = 1000000 -- Đích đến cực xa về hướng dương
+                        local distance = math.abs(targetZ - root.Position.Z)
+                        local duration = distance / flySpeed
+                        
+                        local targetCF = CFrame.new(root.Position.X, currentY, targetZ) * root.CFrame.Rotation
+                        
+                        activeTween = TS:Create(root, TweenInfo.new(duration, Enum.EasingStyle.Linear), {CFrame = targetCF})
+                        activeTween:Play()
+                    end
+                else
+                    if currentY ~= 0 then StopAll() end
+                end
+            end)
         end
     end
 end)
@@ -170,7 +176,6 @@ end)
 -- LUỒNG ÉP CAO ĐỘ (HEARTBEAT)
 RS.Heartbeat:Connect(function()
     if not AutoTravel or currentY == 0 or frozenIsland() then return end
-    
     pcall(function()
         local char = LP.Character
         local hum = char and char:FindFirstChild("Humanoid")
@@ -178,6 +183,7 @@ RS.Heartbeat:Connect(function()
             local seat = hum.SeatPart
             local root = (seat:FindFirstAncestorOfClass("Model") and seat:FindFirstAncestorOfClass("Model").PrimaryPart) or seat
             
+            -- Khóa Y và triệt tiêu vật lý để Tween mượt hơn
             root.CFrame = CFrame.new(root.Position.X, currentY, root.Position.Z) * root.CFrame.Rotation
             root.Velocity = Vector3.zero
             
@@ -190,6 +196,7 @@ RS.Heartbeat:Connect(function()
         end
     end)
 end)
+
 dangmocanh:AddToggle("Boost Fps", {
     Title = "Boost Fps",
     Default = false,
