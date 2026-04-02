@@ -25,7 +25,33 @@ local flySpeed = 325
 local activeTween = nil
 local currentY = 0
 local lastNotify = 0
+local function DoAutoV4(Value)
+    _G.AutoY = Value
+    if Value then
+        task.spawn(function()
+            while _G.AutoY do
+                game:GetService("VirtualInputManager"):SendKeyEvent(true, "Y", false, game)
+                task.wait(0.1)
+                game:GetService("VirtualInputManager"):SendKeyEvent(false, "Y", false, game)
+                task.wait(1)
+            end
+        end)
+    end
+end
 
+local function DoAutoKen(Value)
+    _G.AutoKen = Value
+    if Value then
+        task.spawn(function()
+            while _G.AutoKen do
+                game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", true)
+                task.wait(0.5)
+            end
+        end)
+    else
+        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", false)
+    end
+end
 -- HÀM DỪNG TOÀN BỘ
 local function StopAll()
     if activeTween then activeTween:Cancel() activeTween = nil end
@@ -60,7 +86,8 @@ Library:Notify({
 
 -- Tabs
 local HuntLeviathan = Window:AddTab("Đăng Địt Ánh")
-
+local setting = Window:AddTab("Setting for Farm")
+local concac = setting:AddLeftGroupbox("Setup")
 -- ===== Aimbot Tab =====
 local dangmocanh = HuntLeviathan:AddLeftGroupbox("Leviathan")
 dangmocanh:AddToggle("AutoTravel", {
@@ -206,39 +233,28 @@ dangmocanh:AddToggle("Boost Fps", {
         end
     end
 })
-local setting = Window:AddTab("Setting for Farm")
-local concac = setting:AddLeftGroupbox("Setup")
-concac:AddToggle("ToggleAutoY", {
-    Title = "Auto Turn On V4", 
-    Default = false 
-}):OnChanged(function(Value)
-    _G.AutoY = Value
-    task.spawn(function()
-        while _G.AutoY do
-            game:GetService("VirtualInputManager"):SendKeyEvent(true, "Y", false, game)
-            task.wait(0.1)
-            game:GetService("VirtualInputManager"):SendKeyEvent(false, "Y", false, game)
-            task.wait(1)
-        end
-    end)
-end)
 
-concac:AddToggle("ToggleAutoKen", {
-    Title = "Auto Turn On Observation", 
-    Default = false 
-}):OnChanged(function(Value)
-    _G.AutoKen = Value
-    if Value then
-        task.spawn(function()
-            while _G.AutoKen do
-                game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", true)
-                task.wait(0.5)
-            end
-        end)
-    else
-        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", false)
+
+
+----------------------------------------------------------------
+-- TOGGLES (Using Callback)
+----------------------------------------------------------------
+
+Tabs.Main:AddToggle("ToggleAutoY", {
+    Title = "Auto Turn On V4", 
+    Default = false,
+    Callback = function(Value)
+        DoAutoV4(Value)
     end
-end)
--- Final startup
+})
+
+Tabs.Main:AddToggle("ToggleAutoKen", {
+    Title = "Auto Turn On Observation", 
+    Default = false,
+    Callback = function(Value)
+        DoAutoKen(Value)
+    end
+})
+
 updateHighlightsState()
 print("Banana Hub Loaded Succesfully")
