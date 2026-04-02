@@ -272,7 +272,7 @@ LP.Idled:Connect(function()
     if AntiAFKEnabled then
         VirtualUser:CaptureController()
         VirtualUser:ClickButton2(Vector2.new())
-        print("Banana Cat Hub: Đã chặn kick AFK lúc " .. os.date("%X"))
+        
     end
 end)
 
@@ -282,7 +282,6 @@ concac:AddToggle("AntiAFK", {
     Default = false,
     Callback = function(Value)
         AntiAFKEnabled = Value
-   
     end
 })
 updateHighlightsState()
