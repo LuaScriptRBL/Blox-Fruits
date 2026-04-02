@@ -75,7 +75,7 @@ local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
 
 local z_Limit = 13451
-local flySpeed = 325
+local flySpeed = 350
 local activeTween = nil
 local currentY = 0
 local lastNotify = 0
