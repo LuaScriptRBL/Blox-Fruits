@@ -141,24 +141,9 @@ local function StopAll()
 end
 
 -- TẠO TOGGLE
-local BribeLeviathan = dangmocanh:AddLabel("Status Spy")
-    spawn(function()
-        pcall(function()
-            while wait() do
-                local bribeStatus = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
-                if bribeStatus==5 then
-                    BribeLeviathan:StatusText("Leviathan Is Out There")
-                elseif bribeStatus==0 then
-                    BribeLeviathan:StatusText("I Don't Know")
-                else
-                    BribeLeviathan:StatusText("Buy: " .. tostring(bribeStatus))
-                end
-            end
-        end)
-    end)
-end
 dangmocanh:AddButton({
     Title = "Buy Chip Leviathan",
+    Description = "It does not check spy , still buy chip when you bought full",
     Callback=function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
     end
@@ -166,6 +151,7 @@ dangmocanh:AddButton({
 
 dangmocanh:AddToggle("ToggleBuyChip", {
     Title = "Auto Buy Chip Leviathan",
+    Description = "like buy chip leviathan",
     Default = false,
     Callback = function(Value)
         DoAutoBuyChip(Value)
