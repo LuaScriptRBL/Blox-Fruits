@@ -265,9 +265,29 @@ concac:AddToggle("ToggleAutoKen", {
 })
 
 
--- Kết nối với sự kiện Idled để ngăn chặn việc bị kick
+local AntiAFKEnabled = false
+
+-- Logic Anti-AFK
 LP.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:ClickButton2(Vector2.new())
+    if AntiAFKEnabled then
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
+        print("Banana Cat Hub: Đã chặn kick AFK lúc " .. os.date("%X"))
+    end
+end)
+
+-- Thêm Toggle vào Tab Main
+concac:AddToggle("AntiAFK", {
+    Title = "Anti AFK",
+    Default = false,
+    Callback = function(Value)
+        AntiAFKEnabled = Value
+        Library:Notify({
+            Title = "Banana Cat Hub",
+            Content = "Anti AFK Enlabled"
+            Duration = 3
+        })
+    end
+})
 updateHighlightsState()
 print("Banana Hub Loaded Succesfully")
