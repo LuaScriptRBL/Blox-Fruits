@@ -34,7 +34,22 @@ local function DoAutoV4(Value)
         end)
     end
 end
-
+local function DoAutoBuso(Value)
+    _G.AutoBuso = Value
+    if Value then
+        task.spawn(function()
+            while _G.AutoBuso do
+                pcall(function()
+                    local Character = game:GetService("Players").LocalPlayer.Character
+                    if Character and not Character:FindFirstChild("HasBuso") then
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+                    end
+                end)
+                task.wait(1)
+            end
+        end)
+    end
+end
 local function DoAutoKen(Value)
     _G.AutoKen = Value
     if Value then
@@ -49,7 +64,19 @@ local function DoAutoKen(Value)
     end
 end
 
-
+local function DoAutoV3(Value)
+    _G.AutoT = Value
+    if Value then
+        task.spawn(function()
+            while _G.AutoT do
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("ActivateAbility")
+                end)
+                task.wait(0.5)
+            end
+        end)
+    end
+end
 
 
 -- ===== Banana UI =====
@@ -247,7 +274,21 @@ dangmocanh:AddToggle("Boost Fps", {
 ----------------------------------------------------------------
 -- TOGGLES (Using Callback)
 ----------------------------------------------------------------
-
+concac:AddToggle("ToggleAutoBuso", {
+    Title = "Auto Buso Haki",
+    Default = true,
+    Callback = function(Value)
+        DoAutoBuso(Value)
+    end
+})
+concac:AddToggle("ToggleAutoT", {
+    Title = "Auto On V3",
+    Description = "",
+    Default = false,
+    Callback = function(Value)
+        DoAutoV3(Value)
+    end
+})
 concac:AddToggle("ToggleAutoY", {
     Title = "Auto Turn On V4", 
     Default = false,
@@ -279,7 +320,7 @@ end)
 -- Thêm Toggle vào Tab Main
 concac:AddToggle("AntiAFK", {
     Title = "Anti AFK",
-    Default = false,
+    Default = true,
     Callback = function(Value)
         AntiAFKEnabled = Value
     end
