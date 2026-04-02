@@ -34,6 +34,20 @@ local function DoAutoV4(Value)
         end)
     end
 end
+local function DoAutoBuyChip(Value)
+    _G.AutoBuyChipLevi = Value
+    if Value then
+        task.spawn(function()
+            while _G.AutoBuyChipLevi do
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
+                end)
+                task.wait(2)
+            end
+        end)
+    end
+end
+
 local function DoAutoBuso(Value)
     _G.AutoBuso = Value
     if Value then
@@ -133,14 +147,15 @@ dangmocanh:AddButton({
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
     end
 })
-dangmocanh:AddToggle({
-    Title="Buy Chip Leviathan",
-    Callback=function()
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
-        end 
-        task.wait(1) 
+
+dangmocanh:AddToggle("ToggleBuyChip", {
+    Title = "Auto Buy Chip Leviathan",
+    Default = false,
+    Callback = function(Value)
+        DoAutoBuyChip(Value)
     end
 })
+
 dangmocanh:AddToggle("AutoTravel", {
     Title = "Auto Find Leviathan",
     Default = false,
