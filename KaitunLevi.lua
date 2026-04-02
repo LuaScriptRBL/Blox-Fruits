@@ -240,7 +240,7 @@ dangmocanh:AddToggle("Boost Fps", {
 -- TOGGLES (Using Callback)
 ----------------------------------------------------------------
 
-Tabs.Main:AddToggle("ToggleAutoY", {
+concac:AddToggle("ToggleAutoY", {
     Title = "Auto Turn On V4", 
     Default = false,
     Callback = function(Value)
@@ -248,7 +248,7 @@ Tabs.Main:AddToggle("ToggleAutoY", {
     end
 })
 
-Tabs.Main:AddToggle("ToggleAutoKen", {
+concac:AddToggle("ToggleAutoKen", {
     Title = "Auto Turn On Observation", 
     Default = false,
     Callback = function(Value)
