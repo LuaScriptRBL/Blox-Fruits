@@ -151,7 +151,7 @@ task.spawn(function()
                         
                         -- Duy trì Tween
                         if not activeTween or activeTween.PlaybackState ~= Enum.PlaybackState.Playing then
-                            local targetZ = 1000000000000000000000000000000000000000000000
+                            local targetZ = 1000000
                             local dist = math.abs(targetZ - root.Position.Z)
                             local targetCF = CFrame.new(root.Position.X, currentY, targetZ) * root.CFrame.Rotation
                             
