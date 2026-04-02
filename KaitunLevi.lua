@@ -142,7 +142,7 @@ end
 
 -- TẠO TOGGLE
 dangmocanh:AddButton({
-    Title="Buy Chip Leviathan",
+    Title = "Buy Chip Leviathan",
     Callback=function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
     end
