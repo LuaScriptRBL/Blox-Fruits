@@ -6,7 +6,7 @@
 -- NOTE: Use private servers / alt accounts. Risk of ban exists.
 
 -- Try load Banana UI
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaScriptRBL/Blox-Fruits/refs/heads/main/NewUi.lua"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaScriptRBL/Blox-Fruits/refs/heads/main/NewUi1.lua"))()
 if not Library then 
     warn("Banana UI load failed. Your executor may not support the provided URL.")
     return 
