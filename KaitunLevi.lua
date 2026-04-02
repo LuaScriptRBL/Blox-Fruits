@@ -282,11 +282,7 @@ concac:AddToggle("AntiAFK", {
     Default = false,
     Callback = function(Value)
         AntiAFKEnabled = Value
-        Library:Notify({
-            Title = "Banana Cat Hub",
-            Content = "Anti AFK Enlabled"
-            Duration = 3
-        })
+   
     end
 })
 updateHighlightsState()
