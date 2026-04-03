@@ -476,7 +476,7 @@ concac:AddToggle("AntiAFK", {
 local WeaponSection = concac:AddLeftGroupbox("Weapon and Skill Settings")
 
 WeaponSection:AddDropdown("WeaponSelect", {
-    Text = "Select Weapons",
+    Title = "Select Weapons",
     AllowMulti = true,
     Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
@@ -493,7 +493,7 @@ local weaponConfigs = {
 
 for _, v in ipairs(weaponConfigs) do
     WeaponSection:AddDropdown(v.Name .. "Skills", {
-        Text = v.Name .. " Keys",
+        Title = v.Name .. " Keys",
         AllowMulti = true,
         Values = v.Keys,
         Default = v.Keys,
