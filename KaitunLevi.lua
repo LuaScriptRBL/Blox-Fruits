@@ -278,29 +278,11 @@ end)
 ----------------------------------------------------------------
 -- TOGGLES (Using Callback)
 ----------------------------------------------------------------
-local function NoFog()
-    local lighting = game:GetService("Lighting")
-    if lighting:FindFirstChild("BaseAtmosphere") then
-        lighting.BaseAtmosphere:Destroy()
-    end
-    if lighting:FindFirstChild("SeaTerrorCC") then
-        lighting.SeaTerrorCC:Destroy()
-    end
-    if lighting:FindFirstChild("LightingLayers") then
-        if lighting.LightingLayers:FindFirstChild("Atmosphere") then
-            lighting.LightingLayers.Atmosphere:Destroy()
-        end
-        wait()
-        if lighting.LightingLayers:FindFirstChild("DarkFog") then
-            lighting.LightingLayers.DarkFog:Destroy()
-        end
-    end
-    lighting.FogEnd=100000
-end
-concac:AddToggle({
+
+concac:AddToggle("No Fog", {
     Title = "No Fog",
     Default = false,
-    Callback=function()
+    Callback = function()
         NoFog()
     end
 })
