@@ -34,6 +34,25 @@ local function DoAutoV4(Value)
         end)
     end
 end
+local function NoFog()
+    local lighting = game:GetService("Lighting")
+    if lighting:FindFirstChild("BaseAtmosphere") then
+        lighting.BaseAtmosphere:Destroy()
+    end
+    if lighting:FindFirstChild("SeaTerrorCC") then
+        lighting.SeaTerrorCC:Destroy()
+    end
+    if lighting:FindFirstChild("LightingLayers") then
+        if lighting.LightingLayers:FindFirstChild("Atmosphere") then
+            lighting.LightingLayers.Atmosphere:Destroy()
+        end
+        wait()
+        if lighting.LightingLayers:FindFirstChild("DarkFog") then
+            lighting.LightingLayers.DarkFog:Destroy()
+        end
+    end
+    lighting.FogEnd=100000
+end
 local function DoAutoBuyChip(Value)
     _G.AutoBuyChipLevi = Value
     if Value then
