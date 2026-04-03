@@ -196,7 +196,7 @@ local weaponTypes = {
 }
 
 for _, v in ipairs(weaponTypes) do
-    Tabs.Skill:AddDropdown(v.Name .. "Skills", {
+    cailonl:AddDropdown(v.Name .. "Skills", {
         Title = v.Name .. " Skills",
         Values = v.Keys,
         Multi = true,
