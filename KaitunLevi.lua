@@ -22,18 +22,27 @@ local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
 local VirtualUser = game:GetService("VirtualUser")
 local function DoAutoV4(Value)
-    _G.AutoY = Value
+    _G.RaceClickAutov4 = Value
     if Value then
-        task.spawn(function()
-            while _G.AutoY do
+        spawn(function()
+            while wait(0.5) do
                 pcall(function()
-                    game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("ActivateRaceV4")
+                    if _G.RaceClickAutov4 then
+                        local plr = game:GetService("Players").LocalPlayer
+                        if plr.Character:FindFirstChild("RaceEnergy") then
+                            if plr.Character.RaceEnergy.Value >= 1 then
+                                game:GetService("VirtualInputManager"):SendKeyEvent(true, "Y", false, game)
+                                wait(0.1)
+                                game:GetService("VirtualInputManager"):SendKeyEvent(false, "Y", false, game)
+                            end
+                        end
+                    end
                 end)
-                task.wait(0.5)
             end
         end)
     end
 end
+
 local function NoFog()
     local lighting = game:GetService("Lighting")
     if lighting:FindFirstChild("BaseAtmosphere") then
@@ -347,12 +356,13 @@ concac:AddToggle("ToggleAutoT", {
     end
 })
 concac:AddToggle("ToggleAutoY", {
-    Title = "Auto Turn On V4", 
+    Title = "Auto Turn On V4",
     Default = false,
     Callback = function(Value)
         DoAutoV4(Value)
     end
 })
+
 
 concac:AddToggle("ToggleAutoKen", {
     Title = "Auto Turn On Observation", 
