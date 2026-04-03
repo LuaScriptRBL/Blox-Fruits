@@ -22,14 +22,14 @@ local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
 local VirtualUser = game:GetService("VirtualUser")
 local function DoAutoV4(Value)
-    _G.AutoY = Value
+    _G.AutoT = Value
     if Value then
         task.spawn(function()
-            while _G.AutoY do
-                game:GetService("VirtualInputManager"):SendKeyEvent(true, "Y", false, game)
-                task.wait(0.1)
-                game:GetService("VirtualInputManager"):SendKeyEvent(false, "Y", false, game)
-                task.wait(1)
+            while _G.AutoT do
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("ActivateRaceV4")
+                end)
+                task.wait(0.5)
             end
         end)
     end
