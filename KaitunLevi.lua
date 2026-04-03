@@ -488,9 +488,9 @@ if WaterBase then
 end
 
 -- Toggle Walk on Water
-local WalkOnWater = concac:AddToggle("WaterWalk", {Title = "Walk on Water", Default = false})
+local Toggle = concac:AddToggle("WaterWalk", {Title = "Walk on Water", Default = true})
 
-WalkOnWater:OnChanged(function(Value)
+Toggle:OnChanged(function(Value)
     if Value then
         WaterPart.Size = Vector3.new(1000, 112, 1000)
         WaterPart.CanCollide = true
