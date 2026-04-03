@@ -255,7 +255,36 @@ RS.Heartbeat:Connect(function()
     end)
 end)
 
-dangmocanh:AddToggle("Boost Fps", {
+
+----------------------------------------------------------------
+-- TOGGLES (Using Callback)
+----------------------------------------------------------------
+local function NoFog()
+    local lighting = game:GetService("Lighting")
+    if lighting:FindFirstChild("BaseAtmosphere") then
+        lighting.BaseAtmosphere:Destroy()
+    end
+    if lighting:FindFirstChild("SeaTerrorCC") then
+        lighting.SeaTerrorCC:Destroy()
+    end
+    if lighting:FindFirstChild("LightingLayers") then
+        if lighting.LightingLayers:FindFirstChild("Atmosphere") then
+            lighting.LightingLayers.Atmosphere:Destroy()
+        end
+        wait()
+        if lighting.LightingLayers:FindFirstChild("DarkFog") then
+            lighting.LightingLayers.DarkFog:Destroy()
+        end
+    end
+    lighting.FogEnd=100000
+end
+concac:AddToggle({
+    Title="No Fog",
+    Callback=function()
+        NoFog()
+    end
+})
+concac:AddToggle("Boost Fps", {
     Title = "Boost Fps",
     Default = false,
     Callback = function()
@@ -301,9 +330,6 @@ dangmocanh:AddToggle("Boost Fps", {
 
 
 
-----------------------------------------------------------------
--- TOGGLES (Using Callback)
-----------------------------------------------------------------
 concac:AddToggle("ToggleAutoBuso", {
     Title = "Auto Turn On Buso",
     Default = true,
