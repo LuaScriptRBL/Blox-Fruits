@@ -22,10 +22,10 @@ local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
 local VirtualUser = game:GetService("VirtualUser")
 local function DoAutoV4(Value)
-    _G.AutoT = Value
+    _G.AutoY = Value
     if Value then
         task.spawn(function()
-            while _G.AutoT do
+            while _G.AutoY do
                 pcall(function()
                     game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("ActivateRaceV4")
                 end)
