@@ -280,6 +280,7 @@ local function NoFog()
 end
 concac:AddToggle("No Fog", {
     Title="No Fog",
+    Default = false,
     Callback=function()
         NoFog()
     end
