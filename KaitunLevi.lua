@@ -278,8 +278,8 @@ local function NoFog()
     end
     lighting.FogEnd=100000
 end
-concac:AddToggle("No Fog", {
-    Title="No Fog",
+concac:AddToggle({
+    Title = "No Fog",
     Default = false,
     Callback=function()
         NoFog()
