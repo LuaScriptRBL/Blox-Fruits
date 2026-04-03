@@ -135,9 +135,11 @@ Library:Notify({
 })
 
 -- Tabs
-local HuntLeviathan = Window:AddTab("Đăng Địt Ánh")
+local Main = Window:AddTab("Select Skill")
+local HuntLeviathan = Window:AddTab("Main")
 local setting = Window:AddTab("Setting for Farm")
 local concac = setting:AddLeftGroupbox("Setup")
+local cailon = Main:AddLeftGroupbox("Skill")
 -- ===== Aimbot Tab =====
 local dangmocanh = HuntLeviathan:AddLeftGroupbox("Leviathan")
 local TS = game:GetService("TweenService")
@@ -166,6 +168,84 @@ local function StopAll()
             root.CFrame = CFrame.new(root.Position.X, 23, root.Position.Z) * root.CFrame.Rotation
         end
     end)
+end
+-- --- CẤU HÌNH BIẾN ---
+_G.SelectedSkills = {
+    Melee = {Z = true, X = true, C = true, V = true},
+    Fruit = {Z = true, X = true, C = true, V = true, F = true},
+    Sword = {Z = true, X = true},
+    Gun = {Z = true, X = true}
+}
+_G.WeaponsToUse = {Melee = true, ["Blox Fruit"] = true, Sword = true, Gun = true}
+_G.AttackLeviathan = false
+
+-- --- UI SELECT SKILL ---
+cailon:AddDropdown("WeaponSelect", {
+    Title = "Select Weapons to Use",
+    Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
+    Multi = true,
+    Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
+    Callback = function(Value) _G.WeaponsToUse = Value end
+})
+
+local weaponTypes = {
+    {Name = "Melee", Keys = {"Z", "X", "C", "V"}},
+    {Name = "Fruit", Keys = {"Z", "X", "C", "V", "F"}},
+    {Name = "Sword", Keys = {"Z", "X"}},
+    {Name = "Gun", Keys = {"Z", "X"}}
+}
+
+for _, v in ipairs(weaponTypes) do
+    Tabs.Skill:AddDropdown(v.Name .. "Skills", {
+        Title = v.Name .. " Skills",
+        Values = v.Keys,
+        Multi = true,
+        Default = v.Keys,
+        Callback = function(Value) 
+            _G.SelectedSkills[v.Name == "Fruit" and "Fruit" or v.Name] = Value 
+        end
+    })
+end
+
+-- --- HÀM AUTO SKILL ---
+local function StartAutoSkill()
+    local Order = {
+        {Type = "Melee", Selected = _G.SelectedSkills.Melee},
+        {Type = "Blox Fruit", Selected = _G.SelectedSkills.Fruit},
+        {Type = "Sword", Selected = _G.SelectedSkills.Sword},
+        {Type = "Gun", Selected = _G.SelectedSkills.Gun}
+    }
+
+    for _, Cat in ipairs(Order) do
+        if not _G.AttackLeviathan or not _G.WeaponsToUse[Cat.Type] then continue end
+        
+        local Tool = LP.Backpack:FindFirstChildOfClass("Tool") or LP.Character:FindFirstChildOfClass("Tool")
+        if Tool and Tool:FindFirstChild("ToolTip") and Tool.ToolTip == Cat.Type then
+            LP.Character.Humanoid:EquipTool(Tool)
+            task.wait(0.1)
+            
+            local KeyOrder = {"Z", "X", "C", "V", "F"}
+            for _, Key in ipairs(KeyOrder) do
+                if Cat.Selected[Key] then
+                    VIM:SendKeyEvent(true, Key, false, game)
+                    task.wait(0.05)
+                    VIM:SendKeyEvent(false, Key, false, game)
+                    task.wait(0.2) -- Cách mỗi skill 0.2s theo yêu cầu
+                end
+            end
+            task.wait(0.1)
+        end
+    end
+end
+
+-- --- HÀM TWEEN ---
+local function _tween(TargetCFrame)
+    if not LP.Character or not LP.Character:FindFirstChild("HumanoidRootPart") then return end
+    local Distance = (LP.Character.HumanoidRootPart.Position - TargetCFrame.Position).Magnitude
+    if Distance > 5 then
+        local Time = Distance / 350
+        TS:Create(LP.Character.HumanoidRootPart, TweenInfo.new(Time, Enum.EasingStyle.Linear), {CFrame = TargetCFrame}):Play()
+    end
 end
 
 -- TẠO TOGGLE
@@ -282,6 +362,45 @@ RS.Heartbeat:Connect(function()
         end
     end)
 end)
+local function _tween(TargetCFrame)
+    if not LP.Character or not LP.Character:FindFirstChild("HumanoidRootPart") then return end
+    local Distance = (LP.Character.HumanoidRootPart.Position - TargetCFrame.Position).Magnitude
+    if Distance > 5 then
+        local Time = Distance / 350
+        TS:Create(LP.Character.HumanoidRootPart, TweenInfo.new(Time, Enum.EasingStyle.Linear), {CFrame = TargetCFrame}):Play()
+    end
+end
+
+-- --- ATTACK LEVIATHAN LOGIC ---
+dangmocanh:AddToggle("ToggleLeviathan", {
+    Title = "Attack Leviathan (Beta)",
+    Default = false,
+    Callback = function(Value)
+        _G.AttackLeviathan = Value
+        if Value then
+            task.spawn(function()
+                while _G.AttackLeviathan do
+                    task.wait()
+                    pcall(function()
+                        for _, e in pairs(workspace.SeaBeasts:GetChildren()) do
+                            if e.Name == "Leviathan" and e:FindFirstChild("HumanoidRootPart") and e:FindFirstChild("Health") and e.Health.Value > 0 then
+                                repeat
+                                    task.wait()
+                                    _tween(e.HumanoidRootPart.CFrame) -- Bám sát Target Y
+
+                                    if LP:DistanceFromCharacter(e.HumanoidRootPart.Position) <= 500 then
+                                        StartAutoSkill()
+                                    end
+                                until not _G.AttackLeviathan or not e.Parent or e.Health.Value <= 0
+                            end
+                        end
+                    end)
+                end
+            end)
+        end
+    end
+})
+
 
 
 ----------------------------------------------------------------
