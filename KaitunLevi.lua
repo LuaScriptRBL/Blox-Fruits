@@ -473,6 +473,33 @@ concac:AddToggle("AntiAFK", {
         AntiAFKEnabled = Value
     end
 })
+local WaterPart = game:GetService("Workspace"):FindFirstChild("WalkWaterPart") or Instance.new("Part")
+WaterPart.Name = "WalkWaterPart"
+WaterPart.Transparency = 1
+WaterPart.Anchored = true
+WaterPart.CanCollide = false
+WaterPart.Parent = game:GetService("Workspace")
+
+-- Căn chỉnh vị trí theo Map
+local TargetMap = game:GetService("Workspace"):FindFirstChild("Map")
+local WaterBase = TargetMap and TargetMap:FindFirstChild("WaterBase-Plane")
+if WaterBase then
+    WaterPart.CFrame = WaterBase.CFrame
+end
+
+-- Toggle Walk on Water
+local WalkOnWater = concac:AddToggle("WaterWalk", {Title = "Walk on Water", Default = false})
+
+WalkOnWater:OnChanged(function(Value)
+    if Value then
+        WaterPart.Size = Vector3.new(1000, 112, 1000)
+        WaterPart.CanCollide = true
+    else
+        WaterPart.Size = Vector3.new(1000, 80, 1000)
+        WaterPart.CanCollide = false
+    end
+end)
+
 local WeaponSection = setting:AddLeftGroupbox("Weapon and Skill Settings")
 
 WeaponSection:AddDropdown("WeaponSelect", {
