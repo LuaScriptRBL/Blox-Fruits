@@ -473,7 +473,7 @@ concac:AddToggle("AntiAFK", {
         AntiAFKEnabled = Value
     end
 })
-local WeaponSection = concac:AddLeftGroupbox("Weapon and Skill Settings")
+local WeaponSection = setting:AddLeftGroupbox("Weapon and Skill Settings")
 
 WeaponSection:AddDropdown("WeaponSelect", {
     Title = "Select Weapons",
