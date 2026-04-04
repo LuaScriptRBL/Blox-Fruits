@@ -11,12 +11,13 @@ local function frozenIsland()
         and workspace._WorldOrigin:FindFirstChild("Locations") 
         and workspace._WorldOrigin.Locations:FindFirstChild("Frozen Dimension")
 end
-local plr = ply.LocalPlayer
+
 local TS = game:GetService("TweenService")
 local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
 local VirtualUser = game:GetService("VirtualUser")
 local VIM = game:GetService("VirtualInputManager")
+local plr = LP.LocalPlayer
 local function DoAutoV4(Value)
     _G.RaceClickAutov4 = Value
     if Value then
@@ -347,8 +348,7 @@ local attacklevi = dangmocanh:AddToggle("AttackLevi", {
 									if plr:DistanceFromCharacter(b.HumanoidRootPart.CFrame.Position) <= 500 then
 										MousePos = b:FindFirstChild("Leviathan Segment").Position;
 										if CheckF() then
-											
-										end
+										StartAutoSkill()
 									end
 								until _G.Leviathan1 == false or not b:FindFirstChild("HumanoidRootPart") or not b.Parent or b.Health.Value <= 0
 							end
