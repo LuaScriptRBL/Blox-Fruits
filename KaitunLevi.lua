@@ -472,17 +472,7 @@ concac:AddToggle("AntiAFK", {
     end
 })
 
-local WeaponSection = setting:AddLeftGroupbox("Weapon Settings")
-
-WeaponSection:AddDropdown("WeaponSelect", {
-    Title = "Select Weapons",
-    Multi = true,
-    Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
-    Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
-    Callback = function(Value) _G.WeaponsToUse = Value end
-})
-
-local SkillSection = setting:AddSection("Select Weapon and Skill")
+local SkillSection = setting:AddLeftGroupbox("Select Weapon and Skill")
 
 -- Dropdown chọn Vũ khí (Sử dụng Table tham số)
 SkillSection:AddDropdown("WeaponSelect", {
