@@ -476,7 +476,7 @@ local WeaponSection = setting:AddLeftGroupbox("Weapon Settings")
 
 WeaponSection:AddDropdown("WeaponSelect", {
     Title = "Select Weapons",
-    AllowMulti = true,
+    Multi = true,
     Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Callback = function(Value) _G.WeaponsToUse = Value end
@@ -494,7 +494,7 @@ local weaponConfigs = {
 for _, v in ipairs(weaponConfigs) do
     SkillSection:AddDropdown(v.Name .. "Skills", {
         Title = v.Name .. " Keys",
-        AllowMulti = true,
+        Multi = true,
         Values = v.Keys,
         Default = v.Keys,
         Callback = function(Value) 
