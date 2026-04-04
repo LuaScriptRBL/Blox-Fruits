@@ -472,58 +472,54 @@ concac:AddToggle("AntiAFK", {
     end
 })
 
-local SkillSection = setting:AddLeftGroupbox("Select Weapon and Skill")
+local SkillSection = setting:AddSection("Skill Settings")
 
--- Dropdown chọn Vũ khí (Sử dụng Table tham số)
-SkillSection:AddDropdown("WeaponSelect", {
-    Title = "Select Weapons to Use",
-    Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
-    Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
+-- CẤU TRÚC ĐÚNG: AddDropdown({ Title, Multi, List, Default, Callback })
+SkillSection:AddDropdown({
+    Title = "Select Weapons",
     Multi = true,
+    List = {"Melee", "Blox Fruit", "Sword", "Gun"},
+    Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Callback = function(Value)
         _G.WeaponsToUse = Value
     end
 })
 
--- Dropdown phím Melee
-SkillSection:AddDropdown("MeleeKeys", {
+SkillSection:AddDropdown({
     Title = "Melee Skills",
-    Values = {"Z", "X", "C", "V"},
-    Default = {"Z", "X", "C", "V"},
     Multi = true,
+    List = {"Z", "X", "C", "V"},
+    Default = {"Z", "X", "C", "V"},
     Callback = function(Value)
         _G.SelectedSkills.Melee = Value
     end
 })
 
--- Dropdown phím Fruit
-SkillSection:AddDropdown("FruitKeys", {
+SkillSection:AddDropdown({
     Title = "Fruit Skills",
-    Values = {"Z", "X", "C", "V", "F"},
-    Default = {"Z", "X", "C", "V", "F"},
     Multi = true,
+    List = {"Z", "X", "C", "V", "F"},
+    Default = {"Z", "X", "C", "V", "F"},
     Callback = function(Value)
         _G.SelectedSkills.Fruit = Value
     end
 })
 
--- Dropdown phím Sword
-SkillSection:AddDropdown("SwordKeys", {
+SkillSection:AddDropdown({
     Title = "Sword Skills",
-    Values = {"Z", "X"},
-    Default = {"Z", "X"},
     Multi = true,
+    List = {"Z", "X"},
+    Default = {"Z", "X"},
     Callback = function(Value)
         _G.SelectedSkills.Sword = Value
     end
 })
 
--- Dropdown phím Gun
-SkillSection:AddDropdown("GunKeys", {
+SkillSection:AddDropdown({
     Title = "Gun Skills",
-    Values = {"Z", "X"},
-    Default = {"Z", "X"},
     Multi = true,
+    List = {"Z", "X"},
+    Default = {"Z", "X"},
     Callback = function(Value)
         _G.SelectedSkills.Gun = Value
     end
