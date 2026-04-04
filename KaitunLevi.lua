@@ -475,7 +475,7 @@ concac:AddToggle("AntiAFK", {
 local SkillSection = setting:AddSection("Skill Settings")
 
 -- CẤU TRÚC ĐÚNG: AddDropdown({ Title, Multi, List, Default, Callback })
-SkillSection:AddDropdown({
+SkillSection:AddDropdown("con cac", {
     Title = "Select Weapons",
     Multi = true,
     Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
@@ -485,7 +485,7 @@ SkillSection:AddDropdown({
     end
 })
 
-SkillSection:AddDropdown({
+SkillSection:AddDropdown("cai lon", {
     Title = "Melee Skills",
     Multi = true,
     Values = {"Z", "X", "C", "V"},
@@ -495,7 +495,7 @@ SkillSection:AddDropdown({
     end
 })
 
-SkillSection:AddDropdown({
+SkillSection:AddDropdown("dau buoi", {
     Title = "Fruit Skills",
     Multi = true,
     Values = {"Z", "X", "C", "V", "F"},
@@ -505,7 +505,7 @@ SkillSection:AddDropdown({
     end
 })
 
-SkillSection:AddDropdown({
+SkillSection:AddDropdown("ngu cac", {
     Title = "Sword Skills",
     Multi = true,
     Values = {"Z", "X"},
