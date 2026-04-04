@@ -330,8 +330,8 @@ local function _tp(TargetCFrame)
 end
 
 -- --- ATTACK LEVIATHAN LOGIC ---
-local attacklevi = dangmocanh:AddToggle("AttackLevi", {
-    Text = "Attack Leviathan(Beta)",
+local attacklevi = dangmocanh:AddToggle({
+    Title = "Attack Leviathan(Beta)",
     Default = false)}
     attacklevi:OnChanged(function(Value)
 		_G.Leviathan1 = Value
