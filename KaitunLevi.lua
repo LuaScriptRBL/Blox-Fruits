@@ -11,6 +11,7 @@ local function frozenIsland()
         and workspace._WorldOrigin:FindFirstChild("Locations") 
         and workspace._WorldOrigin.Locations:FindFirstChild("Frozen Dimension")
 end
+local plr = ply.LocalPlayer
 local TS = game:GetService("TweenService")
 local RS = game:GetService("RunService")
 local LP = game:GetService("Players").LocalPlayer
@@ -318,7 +319,7 @@ RS.Heartbeat:Connect(function()
         end
     end)
 end)
-local function _tween(TargetCFrame)
+local function _tp(TargetCFrame)
     if not LP.Character or not LP.Character:FindFirstChild("HumanoidRootPart") then return end
     local Distance = (LP.Character.HumanoidRootPart.Position - TargetCFrame.Position).Magnitude
     if Distance > 5 then
@@ -328,36 +329,32 @@ local function _tween(TargetCFrame)
 end
 
 -- --- ATTACK LEVIATHAN LOGIC ---
-dangmocanh:AddToggle("AttackLevi", {
+local attacklevi = dangmocanh:AddToggle("AttackLevi", {
     Text = "Attack Leviathan(Beta)",
-    Default = false,
-    Callback = function(Value)
-        _G.AttackLeviathan = Value
-        if Value then
-            task.spawn(function()
-                while _G.AttackLeviathan do
-                    task.wait()
-                    pcall(function()
-                        for _, e in pairs(workspace.SeaBeasts:GetChildren()) do
-                            if e.Name == "Leviathan" and e:FindFirstChild("HumanoidRootPart") and e.Health.Value > 0 then
-                                repeat
-                                    task.wait()
-                                    _tween(e.HumanoidRootPart.CFrame) -- Bám sát Y liên tục
-
-                                    if LP:DistanceFromCharacter(e.HumanoidRootPart.Position) <= 500 then
-                                        StartAutoSkill()
-                                    end
-                                until not _G.AttackLeviathan or not e.Parent or e.Health.Value <= 0
-                            end
-                        end
-                    end)
-                end
-            end)
-        end
-    end
-})
-
-
+    Default = false)}
+    attacklevi:OnChanged(function(Value)
+		_G.Leviathan1 = Value
+	end)
+   if  _G.Leviathan1 then
+					if workspace.SeaBeasts:FindFirstChild("Leviathan") then
+						for a, b in pairs(workspace.SeaBeasts:GetChildren()) do
+							if b:FindFirstChild("HumanoidRootPart") and b:FindFirstChild("Leviathan Segment") and b:FindFirstChild("Health") and b.Health.Value > 0 then
+								repeat
+									task.wait()
+									spawn(function()
+										_tp(TargetCframe(b.HumanoidRootPart.Position.X, game:GetService("Workspace").Map["WaterBase-Plane"].Position.Y + 200, b.HumanoidRootPart.Position.Z))
+									end)
+									if plr:DistanceFromCharacter(b.HumanoidRootPart.CFrame.Position) <= 500 then
+										MousePos = b:FindFirstChild("Leviathan Segment").Position;
+										if CheckF() then
+											
+										end
+									end
+								until _G.Leviathan1 == false or not b:FindFirstChild("HumanoidRootPart") or not b.Parent or b.Health.Value <= 0
+							end
+						end
+					end
+				end
 
 ----------------------------------------------------------------
 -- TOGGLES (Using Callback)
