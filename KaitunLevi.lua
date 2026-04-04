@@ -533,9 +533,5 @@ for _, v in ipairs(weaponConfigs) do
 end
 
 updateHighlightsState()
-Library:Notify{(
-Title = "Visibility Hub",
-Description = "Loaded Sucessfully",
-Duration = 4
-)}
+print("con cặc")
 
