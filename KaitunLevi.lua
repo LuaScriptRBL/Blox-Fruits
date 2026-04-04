@@ -178,9 +178,7 @@ local setting = Window:AddTab("Setting for Farm")
 local concac = setting:AddLeftGroupbox("Setup")
 -- ===== Aimbot Tab =====
 local dangmocanh = HuntLeviathan:AddLeftGroupbox("Leviathan")
-local TS = game:GetService("TweenService")
-local RS = game:GetService("RunService")
-local LP = game:GetService("Players").LocalPlayer
+
 
 local z_Limit = 13451
 local flySpeed = 350
