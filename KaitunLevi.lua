@@ -119,7 +119,6 @@ end
 task.spawn(function()
     ExecutePremiumAction()
 end)
-if HasJoinedTeam() then
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaScriptRBL/Blox-Fruits/refs/heads/main/NewUi1.lua"))()
 if not Library then 
     warn("Banana UI load failed. Your executor may not support the provided URL.")
