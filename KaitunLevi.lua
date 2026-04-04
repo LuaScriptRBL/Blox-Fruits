@@ -178,7 +178,9 @@ local setting = Window:AddTab("Setting for Farm")
 local concac = setting:AddLeftGroupbox("Setup")
 -- ===== Aimbot Tab =====
 local dangmocanh = HuntLeviathan:AddLeftGroupbox("Leviathan")
-
+local TS = game:GetService("TweenService")
+local RS = game:GetService("RunService")
+local LP = game:GetService("Players").LocalPlayer
 
 local z_Limit = 13451
 local flySpeed = 350
@@ -471,58 +473,64 @@ concac:AddToggle("AntiAFK", {
         AntiAFKEnabled = Value
     end
 })
+local WaterPart = game:GetService("Workspace"):FindFirstChild("WalkWaterPart") or Instance.new("Part")
+WaterPart.Name = "WalkWaterPart"
+WaterPart.Transparency = 1
+WaterPart.Anchored = true
+WaterPart.CanCollide = false
+WaterPart.Parent = game:GetService("Workspace")
 
-local SkillSection = setting:AddSection("Skill Settings")
+-- Căn chỉnh vị trí theo Map
+local TargetMap = game:GetService("Workspace"):FindFirstChild("Map")
+local WaterBase = TargetMap and TargetMap:FindFirstChild("WaterBase-Plane")
+if WaterBase then
+    WaterPart.CFrame = WaterBase.CFrame
+end
 
--- CẤU TRÚC ĐÚNG: AddDropdown({ Title, Multi, List, Default, Callback })
-SkillSection:AddDropdown("con cac", {
+-- Toggle Walk on Water
+local Toggle = concac:AddToggle("WaterWalk", {
+Title = "Walk on Water", 
+Default = true})
+
+Toggle:OnChanged(function(Value)
+    if Value then
+        WaterPart.Size = Vector3.new(1000, 112, 1000)
+        WaterPart.CanCollide = true
+    else
+        WaterPart.Size = Vector3.new(1000, 80, 1000)
+        WaterPart.CanCollide = false
+    end
+end)
+
+local WeaponSection = setting:AddLeftGroupbox("Weapon and Skill Settings")
+
+WeaponSection:AddDropdown("WeaponSelect", {
     Title = "Select Weapons",
     Multi = true,
     Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
-    Callback = function(Value)
-        _G.WeaponsToUse = Value
-    end
+    Callback = function(Value) _G.WeaponsToUse = Value end
 })
 
-SkillSection:AddDropdown("cai lon", {
-    Title = "Melee Skills",
-    Multi = true,
-    Values = {"Z", "X", "C", "V"},
-    Default = {"Z", "X", "C", "V"},
-    Callback = function(Value)
-        _G.SelectedSkills.Melee = Value
-    end
-})
 
-SkillSection:AddDropdown("dau buoi", {
-    Title = "Fruit Skills",
-    Multi = true,
-    Values = {"Z", "X", "C", "V", "F"},
-    Default = {"Z", "X", "C", "V", "F"},
-    Callback = function(Value)
-        _G.SelectedSkills.Fruit = Value
-    end
-})
+local weaponConfigs = {
+    {Name = "Melee", Keys = {"Z", "X", "C", "V"}},
+    {Name = "Fruit", Keys = {"Z", "X", "C", "V", "F"}},
+    {Name = "Sword", Keys = {"Z", "X"}},
+    {Name = "Gun", Keys = {"Z", "X"}}
+}
 
-SkillSection:AddDropdown("ngu cac", {
-    Title = "Sword Skills",
-    Multi = true,
-    Values = {"Z", "X"},
-    Default = {"Z", "X"},
-    Callback = function(Value)
-        _G.SelectedSkills.Sword = Value
-    end
-})
+for _, v in ipairs(weaponConfigs) do
+    WeaponSection:AddDropdown(v.Name .. "Skills", {
+        Title = v.Name .. " Keys",
+        Multi = true,
+        Values = v.Keys,
+        Default = ".Keys,
+        Callback = function(Value) 
+            _G.SelectedSkills[v.Name == "Fruit" and "Fruit" or v.Name] = Value 
+        end
+    })
+end
 
-SkillSection:AddDropdown({
-    Title = "Gun Skills",
-    Multi = true,
-    Values = {"Z", "X"},
-    Default = {"Z", "X"},
-    Callback = function(Value)
-        _G.SelectedSkills.Gun = Value
-    end
-})
 updateHighlightsState()
-print("Banana Hub Loaded Succesfully")
+Library:Notify("Banana Hub Loaded Succesfully")
