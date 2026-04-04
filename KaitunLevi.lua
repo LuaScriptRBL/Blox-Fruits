@@ -478,7 +478,7 @@ local SkillSection = setting:AddSection("Skill Settings")
 SkillSection:AddDropdown({
     Title = "Select Weapons",
     Multi = true,
-    List = {"Melee", "Blox Fruit", "Sword", "Gun"},
+    Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Callback = function(Value)
         _G.WeaponsToUse = Value
@@ -488,7 +488,7 @@ SkillSection:AddDropdown({
 SkillSection:AddDropdown({
     Title = "Melee Skills",
     Multi = true,
-    List = {"Z", "X", "C", "V"},
+    Values = {"Z", "X", "C", "V"},
     Default = {"Z", "X", "C", "V"},
     Callback = function(Value)
         _G.SelectedSkills.Melee = Value
@@ -498,7 +498,7 @@ SkillSection:AddDropdown({
 SkillSection:AddDropdown({
     Title = "Fruit Skills",
     Multi = true,
-    List = {"Z", "X", "C", "V", "F"},
+    Values = {"Z", "X", "C", "V", "F"},
     Default = {"Z", "X", "C", "V", "F"},
     Callback = function(Value)
         _G.SelectedSkills.Fruit = Value
@@ -508,7 +508,7 @@ SkillSection:AddDropdown({
 SkillSection:AddDropdown({
     Title = "Sword Skills",
     Multi = true,
-    List = {"Z", "X"},
+    Values = {"Z", "X"},
     Default = {"Z", "X"},
     Callback = function(Value)
         _G.SelectedSkills.Sword = Value
@@ -518,7 +518,7 @@ SkillSection:AddDropdown({
 SkillSection:AddDropdown({
     Title = "Gun Skills",
     Multi = true,
-    List = {"Z", "X"},
+    Values = {"Z", "X"},
     Default = {"Z", "X"},
     Callback = function(Value)
         _G.SelectedSkills.Gun = Value
