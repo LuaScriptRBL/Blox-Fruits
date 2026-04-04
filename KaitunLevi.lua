@@ -506,7 +506,7 @@ WeaponSection:AddDropdown("WeaponSelect", {
     Title = "Select Weapons",
     Multi = true,
     Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
-    Default = {"Melee" = true, "Blox Fruit" = true, "Sword" = true, "Gun" true},
+    Default = {1, 2, 3, 4},
     Callback = function(Value) _G.WeaponsToUse = Value end
 })
 
@@ -523,7 +523,7 @@ for _, v in ipairs(weaponConfigs) do
         Title = v.Name .. " Keys",
         Multi = true,
         Values = v.Keys,
-        Default = "v.Keys" = true,
+        Default = 1,
         Callback = function(Value) 
             _G.SelectedSkills[v.Name == "Fruit" and "Fruit" or v.Name] = Value 
         end
