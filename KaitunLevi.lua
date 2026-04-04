@@ -472,16 +472,17 @@ concac:AddToggle("AntiAFK", {
     end
 })
 
-local WeaponSection = setting:AddLeftGroupbox("Weapon and Skill Settings")
+local WeaponSection = setting:AddLeftGroupbox("Weapon Settings")
 
 WeaponSection:AddDropdown("WeaponSelect", {
     Title = "Select Weapons",
-    Multi = true,
+    AllowMulti = true,
     Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
-    Default = {Melee, Blox Fruit, Sword, Gun},
+    Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Callback = function(Value) _G.WeaponsToUse = Value end
 })
 
+local SkillSection = setting:AddRightGroupbox("Skill Settings")
 
 local weaponConfigs = {
     {Name = "Melee", Keys = {"Z", "X", "C", "V"}},
@@ -491,9 +492,9 @@ local weaponConfigs = {
 }
 
 for _, v in ipairs(weaponConfigs) do
-    WeaponSection:AddDropdown(v.Name .. "Skills", {
+    SkillSection:AddDropdown(v.Name .. "Skills", {
         Title = v.Name .. " Keys",
-        Multi = true,
+        AllowMulti = true,
         Values = v.Keys,
         Default = v.Keys,
         Callback = function(Value) 
@@ -501,6 +502,5 @@ for _, v in ipairs(weaponConfigs) do
         end
     })
 end
-
 updateHighlightsState()
 print("Banana Hub Loaded Succesfully")
