@@ -482,25 +482,61 @@ WeaponSection:AddDropdown("WeaponSelect", {
     Callback = function(Value) _G.WeaponsToUse = Value end
 })
 
-local SkillSection = setting:AddRightGroupbox("Skill Settings")
+local SkillSection = setting:AddSection("Select Weapon and Skill")
 
-local weaponConfigs = {
-    {Name = "Melee", Keys = {"Z", "X", "C", "V"}},
-    {Name = "Fruit", Keys = {"Z", "X", "C", "V", "F"}},
-    {Name = "Sword", Keys = {"Z", "X"}},
-    {Name = "Gun", Keys = {"Z", "X"}}
-}
+-- Dropdown chọn Vũ khí (Sử dụng Table tham số)
+SkillSection:AddDropdown("WeaponSelect", {
+    Text = "Select Weapons to Use",
+    Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
+    Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
+    AllowMulti = true,
+    Callback = function(Value)
+        _G.WeaponsToUse = Value
+    end
+})
 
-for _, v in ipairs(weaponConfigs) do
-    SkillSection:AddDropdown(v.Name .. "Skills", {
-        Title = v.Name .. " Keys",
-        Multi = true,
-        Values = v.Keys,
-        Default = v.Keys,
-        Callback = function(Value) 
-            _G.SelectedSkills[v.Name == "Fruit" and "Fruit" or v.Name] = Value 
-        end
-    })
-end
+-- Dropdown phím Melee
+SkillSection:AddDropdown("MeleeKeys", {
+    Text = "Melee Skills",
+    Default = {"Z", "X", "C", "V"},
+    Values = {"Z", "X", "C", "V"},
+    AllowMulti = true,
+    Callback = function(Value)
+        _G.SelectedSkills.Melee = Value
+    end
+})
+
+-- Dropdown phím Fruit
+SkillSection:AddDropdown("FruitKeys", {
+    Text = "Fruit Skills",
+    Default = {"Z", "X", "C", "V", "F"},
+    Values = {"Z", "X", "C", "V", "F"},
+    AllowMulti = true,
+    Callback = function(Value)
+        _G.SelectedSkills.Fruit = Value
+    end
+})
+
+-- Dropdown phím Sword
+SkillSection:AddDropdown("SwordKeys", {
+    Text = "Sword Skills",
+    Default = {"Z", "X"},
+    Values = {"Z", "X"},
+    AllowMulti = true,
+    Callback = function(Value)
+        _G.SelectedSkills.Sword = Value
+    end
+})
+
+-- Dropdown phím Gun
+SkillSection:AddDropdown("GunKeys", {
+    Text = "Gun Skills",
+    Default = {"Z", "X"},
+    Values = {"Z", "X"},
+    AllowMulti = true,
+    Callback = function(Value)
+        _G.SelectedSkills.Gun = Value
+    end
+})
 updateHighlightsState()
 print("Banana Hub Loaded Succesfully")
