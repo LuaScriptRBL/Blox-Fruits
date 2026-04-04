@@ -477,9 +477,9 @@ local SkillSection = setting:AddLeftGroupbox("Select Weapon and Skill")
 -- Dropdown chọn Vũ khí (Sử dụng Table tham số)
 SkillSection:AddDropdown("WeaponSelect", {
     Title = "Select Weapons to Use",
-    Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
     Values = {"Melee", "Blox Fruit", "Sword", "Gun"},
-    AllowMulti = true,
+    Default = {"Melee", "Blox Fruit", "Sword", "Gun"},
+    Multi = true,
     Callback = function(Value)
         _G.WeaponsToUse = Value
     end
@@ -488,9 +488,9 @@ SkillSection:AddDropdown("WeaponSelect", {
 -- Dropdown phím Melee
 SkillSection:AddDropdown("MeleeKeys", {
     Title = "Melee Skills",
-    Default = {"Z", "X", "C", "V"},
     Values = {"Z", "X", "C", "V"},
-    AllowMulti = true,
+    Default = {"Z", "X", "C", "V"},
+    Multi = true,
     Callback = function(Value)
         _G.SelectedSkills.Melee = Value
     end
@@ -499,9 +499,9 @@ SkillSection:AddDropdown("MeleeKeys", {
 -- Dropdown phím Fruit
 SkillSection:AddDropdown("FruitKeys", {
     Title = "Fruit Skills",
-    Default = {"Z", "X", "C", "V", "F"},
     Values = {"Z", "X", "C", "V", "F"},
-    AllowMulti = true,
+    Default = {"Z", "X", "C", "V", "F"},
+    Multi = true,
     Callback = function(Value)
         _G.SelectedSkills.Fruit = Value
     end
@@ -510,9 +510,9 @@ SkillSection:AddDropdown("FruitKeys", {
 -- Dropdown phím Sword
 SkillSection:AddDropdown("SwordKeys", {
     Title = "Sword Skills",
-    Default = {"Z", "X"},
     Values = {"Z", "X"},
-    AllowMulti = true,
+    Default = {"Z", "X"},
+    Multi = true,
     Callback = function(Value)
         _G.SelectedSkills.Sword = Value
     end
@@ -521,9 +521,9 @@ SkillSection:AddDropdown("SwordKeys", {
 -- Dropdown phím Gun
 SkillSection:AddDropdown("GunKeys", {
     Title = "Gun Skills",
-    Default = {"Z", "X"},
     Values = {"Z", "X"},
-    AllowMulti = true,
+    Default = {"Z", "X"},
+    Multi = true,
     Callback = function(Value)
         _G.SelectedSkills.Gun = Value
     end
