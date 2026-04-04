@@ -1,11 +1,125 @@
--- Merged: Simple Arsenal Helper + follow me Luigi4k85 Mobile Final (Banana UI) + Weapon Enhancements --
--- Features: Banana GUI, Highlights ESP, Box/Name/Distance ESP (Drawing fallback),
--- Aimbot, Silent Aim, NoRecoil (best-effort), WalkSpeed lock (Movement tab),
--- Rapid Fire (FireRate mod), Fixed Infinite Ammo (auto-refill), Spread Control
--- Discord: https://discord.gg/rr8jV4e5
--- NOTE: Use private servers / alt accounts. Risk of ban exists.
+local CollectionService = game:GetService("CollectionService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
--- Try load Banana UI
+local LocalPlayer = Players.LocalPlayer
+
+local function HasJoinedTeam()
+    if LocalPlayer.Team ~= nil then
+        local teamName = LocalPlayer.Team.Name
+        if teamName == "Pirates" or teamName == "Marines" then
+            return true
+        end
+    end
+    return false
+end
+
+if HasJoinedTeam() then return end
+
+repeat 
+    task.wait(0.1) 
+until LocalPlayer:FindFirstChild("PlayerGui")
+
+local IsRunning = true 
+
+local function PreCheckSystem()
+    task.spawn(function()
+        local errorKey = "Player data still not ready"
+        while IsRunning do
+            pcall(function()
+                if HasJoinedTeam() then
+                    IsRunning = false
+                    return
+                end
+
+                for _, v in pairs(LocalPlayer.PlayerGui:GetDescendants()) do
+                    if v:IsA("TextLabel") or v:IsA("TextButton") then
+                        if string.find(v.Text, errorKey) then
+                            v:Destroy()
+                        end
+                        if string.find(string.lower(v.Text), "cài đặt") then
+                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Escape, false, game)
+                            task.wait(0.05)
+                            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Escape, false, game)
+                        end
+                    end
+                end
+            end)
+            RunService.Heartbeat:Wait()
+        end
+    end)
+end
+
+local function StartSpamKeyA()
+    task.spawn(function()
+        while IsRunning do
+            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.A, false, game)
+            task.wait(0.01)
+            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.A, false, game)
+            task.wait(0.01)
+        end
+    end)
+end
+
+local function ExecutePremiumAction()
+    if HasJoinedTeam() then return end
+
+    PreCheckSystem()
+    StartSpamKeyA()
+    
+    task.wait(0.3)
+
+    for i = 1, 3 do
+        VirtualInputManager:SendMouseButtonEvent(1, 1, 0, true, game, 1)
+        task.wait(0.01)
+        VirtualInputManager:SendMouseButtonEvent(1, 1, 0, false, game, 1)
+        task.wait(0.05)
+    end
+
+    local tx, ty
+    if getgenv().Team == "Pirates" then
+        tx, ty = 220 + (97 / 2), 102 + (105 / 2)
+    elseif getgenv().Team == "Marines" then
+        tx, ty = 347 + (97 / 2), 101 + (103 / 2)
+    else
+        tx, ty = 220 + (97 / 2), 102 + (105 / 2)
+    end
+
+    local objects = LocalPlayer.PlayerGui:GetGuiObjectsAtPosition(tx, ty)
+    
+    for _, obj in pairs(objects) do
+        CollectionService:AddTag(obj, "BananaCat_Final_Task")
+    end
+
+    local tagged = CollectionService:GetTagged("BananaCat_Final_Task")
+    
+    for _, target in pairs(tagged) do
+        task.spawn(function()
+            local events = {"MouseButton1Click", "Activated", "TouchTap", "InputBegan"}
+            for _, name in pairs(events) do
+                local success, connections = pcall(function() return getconnections(target[name]) end)
+                if success and connections then
+                    for _, con in pairs(connections) do
+                        con:Fire()
+                    end
+                end
+            end
+        end)
+    end
+
+    for _, target in pairs(tagged) do
+        CollectionService:RemoveTag(target, "BananaCat_Final_Task")
+    end
+
+    task.wait(0.5) 
+    IsRunning = false 
+end
+
+task.spawn(function()
+    ExecutePremiumAction()
+end)
+if HasJoinedTeam() then
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaScriptRBL/Blox-Fruits/refs/heads/main/NewUi1.lua"))()
 if not Library then 
     warn("Banana UI load failed. Your executor may not support the provided URL.")
