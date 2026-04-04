@@ -498,7 +498,7 @@ for _, v in ipairs(weaponConfigs) do
         Title = v.Name .. " Keys",
         Multi = true,
         Values = v.Keys,
-        Default = ".Keys,
+        Default = v.Keys,
         Callback = function(Value) 
             _G.SelectedSkills[v.Name == "Fruit" and "Fruit" or v.Name] = Value 
         end
