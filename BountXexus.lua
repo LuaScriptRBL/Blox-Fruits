@@ -6315,32 +6315,14 @@ _modules["ui"] = function()
             end)
         end)
         
-        -- Check for cached key (auto-login)
-        if Auth then
-            Auth.tryCachedKey(function(success, message)
-                if success then
-                    -- Valid cached key, skip to dashboard
-                    if UI.KeyScreen then UI.KeyScreen.Visible = false end
-                    if UI.Dashboard then UI.Dashboard.Visible = true end
-                    UI.startUpdateLoop()
-                    if Utils then Utils.notify("NexusBounty", "Auto-logged in!", 3) end
-                    
-                    -- Check if config still needs setup (first run or unconfigured)
-                    if Config and (Config.isFirstRun() or not Config.isConfigured()) then
-                        task.delay(0.5, function()
-                            UI.openConfig()
-                            if Utils then Utils.notify("NexusBounty", "Please set up your configuration!") end
-                        end)
-                    end
-                else
-                    -- No valid key, show key screen
-                    if UI.KeyScreen then UI.KeyScreen.Visible = true end
-                    if UI.Dashboard then UI.Dashboard.Visible = false end
-                end
+        -- BYPASS KEY SCREEN — go straight to dashboard
+        if UI.KeyScreen then UI.KeyScreen.Visible = false end
+        if UI.Dashboard then UI.Dashboard.Visible = true end
+        UI.startUpdateLoop()
+        if Config and (Config.isFirstRun() or not Config.isConfigured()) then
+            task.delay(0.5, function()
+                UI.openConfig()
             end)
-        else
-            -- Fallback if Auth missing (shouldn't happen)
-            if UI.KeyScreen then UI.KeyScreen.Visible = true end
         end
         
         -- Custom cursor DISABLED - was blocking GUI interaction
